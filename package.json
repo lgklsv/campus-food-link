@@ -5,11 +5,14 @@
   "scripts": {
     "dev": "vite dev --port 3000",
     "build": "vite build",
+    "deploy": "pnpm build && wrangler deploy",
+    "cf-typegen": "wrangler types",
     "preview": "vite preview",
     "test": "vitest run",
-    "lint": "eslint",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx}\"",
-    "check": "prettier --check \"**/*.{ts,tsx,js,jsx}\"",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check .",
+    "fix": "biome check --write .",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -32,20 +35,19 @@
     "tw-animate-css": "^1.4.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.5.14",
+    "@cloudflare/vite-plugin": "^1.60.2",
     "@tanstack/devtools-vite": "latest",
-    "@tanstack/eslint-config": "latest",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^6",
-    "eslint": "^9",
     "jsdom": "^30",
-    "prettier": "^3.9.6",
-    "prettier-plugin-tailwindcss": "^0.8.1",
     "typescript": "^6",
     "vite": "^8",
-    "vitest": "^4"
+    "vitest": "^4",
+    "wrangler": "^4.141.0"
   }
 }
