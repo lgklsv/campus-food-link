@@ -1,6 +1,12 @@
 import { TanStackDevtools } from "@tanstack/react-devtools"
-import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router"
+import {
+  createRootRoute,
+  HeadContent,
+  Outlet,
+  Scripts,
+} from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
+import { DesktopHeader } from "@/widgets/app-navigation/ui/desktop-header"
 
 import appCss from "../app/styles/index.css?url"
 
@@ -15,7 +21,7 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "TanStack Start Starter",
+        title: "Campus Food Link",
       },
     ],
     links: [
@@ -25,6 +31,12 @@ export const Route = createRootRoute({
       },
     ],
   }),
+  component: () => (
+    <div className="min-h-svh">
+      <DesktopHeader />
+      <Outlet />
+    </div>
+  ),
   notFoundComponent: () => (
     <main className="container mx-auto p-4 pt-16">
       <h1>404</h1>
