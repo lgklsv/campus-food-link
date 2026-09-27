@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router"
 import { cn } from "cn"
-import { UtensilsCrossed } from "lucide-react"
 import { Avatar } from "@/shared/ui/avatar"
+import { Logo } from "@/shared/ui/logo"
 
 const linkClass =
   "rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
@@ -14,12 +14,10 @@ export function DesktopHeader() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-6">
         <Link
           to="/"
-          className="flex items-center gap-2.5 font-semibold tracking-tight"
+          aria-label="Campus Food Link home"
+          className="rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
         >
-          <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-            <UtensilsCrossed className="size-4" aria-hidden="true" />
-          </span>
-          Campus Food Link
+          <Logo />
         </Link>
         <nav aria-label="Main navigation" className="flex items-center gap-1">
           <Link
