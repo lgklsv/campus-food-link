@@ -6,10 +6,11 @@ export function VendorHero({ vendor }: { vendor: Vendor }) {
     <div className="relative aspect-[1.65] overflow-hidden rounded-b-3xl bg-secondary sm:aspect-[2.2] md:aspect-[3] md:rounded-3xl">
       <img
         src={vendor.image}
-          alt=""
-          width={1440}
-          height={900}
-          className="size-full object-cover"
+        alt=""
+        width={1440}
+        height={900}
+        fetchPriority="high"
+        className="size-full object-cover"
       />
       <BackButton fallbackTo="/" className="absolute left-4 top-4" />
     </div>

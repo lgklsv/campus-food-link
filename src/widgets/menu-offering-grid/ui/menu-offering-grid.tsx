@@ -12,14 +12,14 @@ export function MenuOfferingGrid({
   return (
     <section aria-label={label}>
       <ul className="grid grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-5 md:grid-cols-3 lg:grid-cols-4">
-        {offerings.map((offering) => (
+        {offerings.map((offering, index) => (
           <li key={offering.id}>
             <Link
               to="/menu/$offeringId"
               params={{ offeringId: offering.id }}
               className="block rounded-3xl outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
             >
-              <MenuOfferingCard offering={offering} />
+              <MenuOfferingCard offering={offering} priority={index < 4} />
             </Link>
           </li>
         ))}

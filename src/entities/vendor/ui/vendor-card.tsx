@@ -10,6 +10,7 @@ export function VendorCard({ vendor }: { vendor: Vendor }) {
           alt=""
           width={48}
           height={48}
+          fetchPriority="high"
           className="size-full object-cover"
         />
       </div>

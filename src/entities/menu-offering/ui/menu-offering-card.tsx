@@ -2,7 +2,13 @@ import { Badge } from "@/shared/ui/badge"
 import { formatMenuPrice } from "../lib/format-menu-price"
 import type { MenuOffering } from "../model/menu-offerings"
 
-export function MenuOfferingCard({ offering }: { offering: MenuOffering }) {
+export function MenuOfferingCard({
+  offering,
+  priority = false,
+}: {
+  offering: MenuOffering
+  priority?: boolean
+}) {
   return (
     <article className="min-w-0">
       <div className="flex aspect-square items-center justify-center overflow-hidden rounded-3xl bg-secondary">
@@ -11,6 +17,7 @@ export function MenuOfferingCard({ offering }: { offering: MenuOffering }) {
           alt=""
           width={640}
           height={640}
+          fetchPriority={priority ? "high" : "auto"}
           className="h-full w-full object-contain p-3 sm:p-5"
         />
       </div>
