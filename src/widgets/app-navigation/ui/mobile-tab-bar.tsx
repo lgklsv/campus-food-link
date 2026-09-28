@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router"
 import { ForkKnife, ReceiptText, ShoppingCart } from "lucide-react"
+import { mockAccount } from "@/entities/account/model/mock-account"
 import { Avatar } from "@/shared/ui/avatar"
 
 const linkClass =
@@ -43,7 +44,11 @@ export function MobileTabBar() {
           className={linkClass}
           activeProps={{ className: activeClass }}
         >
-          <Avatar name="Account" className="size-6 text-[9px]" />
+          <Avatar
+            name={mockAccount.name}
+            src={mockAccount.avatar}
+            className="size-6 border border-border/50 bg-background"
+          />
           Account
         </Link>
       </div>

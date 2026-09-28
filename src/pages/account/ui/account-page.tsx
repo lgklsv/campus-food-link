@@ -1,10 +1,13 @@
+import { AccountHeader } from "./account-header"
+import { AccountHighlights } from "./account-highlights"
+import { AccountSettings } from "./account-settings"
+
 export function AccountPage() {
   return (
-    <>
-      <h1 className="text-3xl font-semibold tracking-tight">Account</h1>
-      <p className="mt-2 text-muted-foreground">
-        Your account details will appear here.
-      </p>
-    </>
+    <div className="mx-auto flex w-full max-w-2xl flex-col gap-8 md:gap-10">
+      <AccountHeader />
+      <AccountHighlights />
+      <AccountSettings />
+    </div>
   )
 }

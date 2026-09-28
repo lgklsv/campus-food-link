@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router"
 import { cn } from "cn"
+import { mockAccount } from "@/entities/account/model/mock-account"
 import { Avatar } from "@/shared/ui/avatar"
 import { Logo } from "@/shared/ui/logo"
 
@@ -50,7 +51,7 @@ export function DesktopHeader() {
             }}
           >
             Account
-            <Avatar name="Account" />
+            <Avatar name={mockAccount.name} src={mockAccount.avatar} />
           </Link>
         </nav>
       </div>

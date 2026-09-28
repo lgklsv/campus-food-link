@@ -4,7 +4,7 @@ import { AccountPage } from "@/pages/account/ui/account-page"
 
 export const Route = createFileRoute("/account/")({
   component: () => (
-    <TabPageLayout>
+    <TabPageLayout surface="secondary">
       <AccountPage />
     </TabPageLayout>
   ),
