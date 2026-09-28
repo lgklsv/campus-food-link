@@ -51,8 +51,6 @@ export function CartItem({
           alt=""
           width={112}
           height={112}
-          loading="lazy"
-          decoding="async"
           className="absolute inset-0 size-full object-contain p-2"
         />
       </div>

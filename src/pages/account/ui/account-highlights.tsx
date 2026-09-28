@@ -12,7 +12,6 @@ export function AccountHighlights() {
           alt=""
           width="80"
           height="80"
-          decoding="async"
           className="size-16 object-contain sm:size-20"
         />
         <div>
@@ -30,7 +29,6 @@ export function AccountHighlights() {
           alt=""
           width="80"
           height="80"
-          decoding="async"
           className="size-16 object-contain sm:size-20"
         />
         <div>
