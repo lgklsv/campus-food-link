@@ -15,6 +15,7 @@ export function CatalogSearch() {
         id="catalog-search"
         type="search"
         placeholder="Search..."
+        readOnly
         className="h-10 w-full rounded-xl border-transparent bg-secondary pl-10 text-base shadow-none md:text-base"
       />
     </div>

@@ -1,23 +1,19 @@
 import { Badge } from "@/shared/ui/badge"
-import type { CatalogItem } from "../model/catalog-items"
+import { formatMenuPrice } from "../lib/format-menu-price"
+import type { MenuOffering } from "../model/menu-offerings"
 
-const priceFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-})
-
-export function CatalogItemCard({
-  item,
+export function MenuOfferingCard({
+  offering,
   priority = false,
 }: {
-  item: CatalogItem
+  offering: MenuOffering
   priority?: boolean
 }) {
   return (
     <article className="min-w-0">
       <div className="flex aspect-square items-center justify-center overflow-hidden rounded-3xl bg-secondary">
         <img
-          src={item.image}
+          src={offering.image}
           alt=""
           width={640}
           height={640}
@@ -28,10 +24,10 @@ export function CatalogItemCard({
       </div>
       <div className="space-y-1 px-1 pt-2">
         <h2 className="text-sm font-medium leading-snug sm:text-lg">
-          {item.name}
+          {offering.name}
         </h2>
         <Badge variant="secondary">
-          {priceFormatter.format(item.priceCents / 100)}
+          {formatMenuPrice(offering.priceCents)}
         </Badge>
       </div>
     </article>
