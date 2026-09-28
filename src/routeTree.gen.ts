@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountRouteRouteImport } from './routes/account/route'
+import { Route as CartRouteImport } from './routes/cart'
 import { Route as OrdersRouteRouteImport } from './routes/orders/route'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
 import { Route as MenuOfferingIdRouteImport } from './routes/menu/$offeringId'
@@ -25,6 +26,11 @@ const IndexRoute = IndexRouteImport.update({
 const AccountRouteRoute = AccountRouteRouteImport.update({
   id: '/account',
   path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartRoute = CartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrdersRouteRoute = OrdersRouteRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRouteRouteWithChildren
   '/orders': typeof OrdersRouteRouteWithChildren
+  '/cart': typeof CartRoute
   '/menu/$offeringId': typeof MenuOfferingIdRoute
   '/vendors/$vendorId': typeof VendorsVendorIdRoute
   '/account/': typeof AccountIndexRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cart': typeof CartRoute
   '/menu/$offeringId': typeof MenuOfferingIdRoute
   '/vendors/$vendorId': typeof VendorsVendorIdRoute
   '/account': typeof AccountIndexRoute
@@ -74,6 +82,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/account': typeof AccountRouteRouteWithChildren
   '/orders': typeof OrdersRouteRouteWithChildren
+  '/cart': typeof CartRoute
   '/menu/$offeringId': typeof MenuOfferingIdRoute
   '/vendors/$vendorId': typeof VendorsVendorIdRoute
   '/account/': typeof AccountIndexRoute
@@ -85,17 +94,25 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/orders'
+    | '/cart'
     | '/menu/$offeringId'
     | '/vendors/$vendorId'
     | '/account/'
     | '/orders/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/menu/$offeringId' | '/vendors/$vendorId' | '/account' | '/orders'
+  to:
+    | '/'
+    | '/cart'
+    | '/menu/$offeringId'
+    | '/vendors/$vendorId'
+    | '/account'
+    | '/orders'
   id:
     | '__root__'
     | '/'
     | '/account'
     | '/orders'
+    | '/cart'
     | '/menu/$offeringId'
     | '/vendors/$vendorId'
     | '/account/'
@@ -106,6 +123,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRouteRoute: typeof AccountRouteRouteWithChildren
   OrdersRouteRoute: typeof OrdersRouteRouteWithChildren
+  CartRoute: typeof CartRoute
   MenuOfferingIdRoute: typeof MenuOfferingIdRoute
   VendorsVendorIdRoute: typeof VendorsVendorIdRoute
 }
@@ -124,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/account'
       fullPath: '/account'
       preLoaderRoute: typeof AccountRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cart': {
+      id: '/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/orders': {
@@ -192,6 +217,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRouteRoute: AccountRouteRouteWithChildren,
   OrdersRouteRoute: OrdersRouteRouteWithChildren,
+  CartRoute: CartRoute,
   MenuOfferingIdRoute: MenuOfferingIdRoute,
   VendorsVendorIdRoute: VendorsVendorIdRoute,
 }

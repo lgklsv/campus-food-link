@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router"
-import { ForkKnife, ReceiptText } from "lucide-react"
+import { ForkKnife, ReceiptText, ShoppingCart } from "lucide-react"
 import { Avatar } from "@/shared/ui/avatar"
 
 const linkClass =
@@ -21,6 +21,14 @@ export function MobileTabBar() {
         >
           <ForkKnife className="size-5" aria-hidden="true" />
           Catalog
+        </Link>
+        <Link
+          to="/cart"
+          className={linkClass}
+          activeProps={{ className: activeClass }}
+        >
+          <ShoppingCart className="size-5" aria-hidden="true" />
+          Cart
         </Link>
         <Link
           to="/orders"

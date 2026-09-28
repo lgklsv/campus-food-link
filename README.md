@@ -10,6 +10,7 @@ src/
     layouts/            # Shared page layouts
     styles/             # Global styles and design tokens
   pages/
+    cart/               # Static cart review and mock items
     catalog/            # Catalog page and its UI components
     menu-offering/      # Menu offering page and its UI components
     vendor/             # Vendor page and its UI components

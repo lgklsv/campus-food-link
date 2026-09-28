@@ -29,6 +29,13 @@ export function DesktopHeader() {
             Catalog
           </Link>
           <Link
+            to="/cart"
+            className={linkClass}
+            activeProps={{ className: activeClass }}
+          >
+            Cart
+          </Link>
+          <Link
             to="/orders"
             className={linkClass}
             activeProps={{ className: activeClass }}

@@ -17,7 +17,10 @@ export function MenuOfferingPage({
         <MenuOfferingHero offering={offering} />
         <div className="px-4 md:px-0 md:pt-4">
           <MenuOfferingSummary offering={offering} vendor={vendor} />
-          <OrderPreviewBar priceCents={offering.priceCents} />
+          <OrderPreviewBar
+            priceCents={offering.priceCents}
+            itemName={offering.name}
+          />
         </div>
       </div>
     </main>
