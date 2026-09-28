@@ -10,7 +10,7 @@ const activeClass =
 
 export function DesktopHeader() {
   return (
-    <header className="hidden border-b border-border/70 bg-background md:block">
+    <header className="sticky top-0 z-30 hidden border-b border-border/70 bg-background md:block">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-6">
         <Link
           to="/"

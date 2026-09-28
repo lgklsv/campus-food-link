@@ -4,7 +4,7 @@ import { CatalogPage } from "@/pages/catalog/ui/catalog-page"
 
 export const Route = createFileRoute("/")({
   component: () => (
-    <TabPageLayout>
+    <TabPageLayout className="pt-0 md:pt-6">
       <CatalogPage />
     </TabPageLayout>
   ),
