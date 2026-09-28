@@ -1,10 +1,18 @@
+import { Link } from "@tanstack/react-router"
 import { formatMenuPrice } from "@/entities/menu-offering/lib/format-menu-price"
 import type { MenuOffering } from "@/entities/menu-offering/model/menu-offerings"
+import type { Vendor } from "@/entities/vendor/model/vendors"
 import { VendorCard } from "@/entities/vendor/ui/vendor-card"
 import { Badge } from "@/shared/ui/badge"
 import { Separator } from "@/shared/ui/separator"
 
-export function MenuOfferingSummary({ offering }: { offering: MenuOffering }) {
+export function MenuOfferingSummary({
+  offering,
+  vendor,
+}: {
+  offering: MenuOffering
+  vendor: Vendor
+}) {
   return (
     <>
       <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
@@ -22,10 +30,13 @@ export function MenuOfferingSummary({ offering }: { offering: MenuOffering }) {
 
       <Separator className="mt-6" />
       <div className="pt-5">
-        <VendorCard
-          name={offering.vendorName}
-          estimatedMinutes={offering.estimatedMinutes}
-        />
+        <Link
+          to="/vendors/$vendorId"
+          params={{ vendorId: vendor.id }}
+          className="block rounded-xl outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          <VendorCard vendor={vendor} />
+        </Link>
       </div>
     </>
   )

@@ -4,8 +4,7 @@ export type MenuOffering = {
   priceCents: number
   image: string
   description: string
-  vendorName: string
-  estimatedMinutes: string
+  vendorId: string
   portionGrams?: number
 }
 
@@ -17,8 +16,7 @@ export const menuOfferings: MenuOffering[] = [
     image: "/catalog/teriyaki-chicken-bowl.webp",
     description:
       "Grilled chicken, rice, broccoli, carrots, and teriyaki sauce.",
-    vendorName: "Green Bowl",
-    estimatedMinutes: "10–15 min",
+    vendorId: "green-bowl",
     portionGrams: 300,
   },
   {
@@ -27,8 +25,7 @@ export const menuOfferings: MenuOffering[] = [
     priceCents: 850,
     image: "/catalog/classic-burger.webp",
     description: "Beef burger with lettuce and tomato.",
-    vendorName: "Campus Grill",
-    estimatedMinutes: "10–15 min",
+    vendorId: "campus-grill",
   },
   {
     id: "chicken-wrap",
@@ -36,8 +33,7 @@ export const menuOfferings: MenuOffering[] = [
     priceCents: 725,
     image: "/catalog/chicken-wrap.webp",
     description: "Grilled chicken wrap with vegetables.",
-    vendorName: "Campus Grill",
-    estimatedMinutes: "10–15 min",
+    vendorId: "campus-grill",
   },
   {
     id: "french-fries",
@@ -45,8 +41,7 @@ export const menuOfferings: MenuOffering[] = [
     priceCents: 350,
     image: "/catalog/french-fries.webp",
     description: "Crispy seasoned fries.",
-    vendorName: "Campus Grill",
-    estimatedMinutes: "10–15 min",
+    vendorId: "campus-grill",
   },
   {
     id: "grain-bowl",
@@ -54,8 +49,7 @@ export const menuOfferings: MenuOffering[] = [
     priceCents: 925,
     image: "/catalog/grain-bowl.webp",
     description: "Rice, roasted vegetables, and avocado.",
-    vendorName: "Green Bowl",
-    estimatedMinutes: "10–15 min",
+    vendorId: "green-bowl",
   },
   {
     id: "cappuccino",
@@ -63,7 +57,6 @@ export const menuOfferings: MenuOffering[] = [
     priceCents: 425,
     image: "/catalog/cappuccino.webp",
     description: "Espresso with steamed milk.",
-    vendorName: "Coffee Corner",
-    estimatedMinutes: "5–10 min",
+    vendorId: "coffee-corner",
   },
 ]

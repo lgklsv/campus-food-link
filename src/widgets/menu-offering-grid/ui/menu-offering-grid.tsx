@@ -1,12 +1,18 @@
 import { Link } from "@tanstack/react-router"
-import { menuOfferings } from "@/entities/menu-offering/model/menu-offerings"
+import type { MenuOffering } from "@/entities/menu-offering/model/menu-offerings"
 import { MenuOfferingCard } from "@/entities/menu-offering/ui/menu-offering-card"
 
-export function CatalogGrid() {
+export function MenuOfferingGrid({
+  offerings,
+  label,
+}: {
+  offerings: MenuOffering[]
+  label: string
+}) {
   return (
-    <section aria-label="Catalog items">
+    <section aria-label={label}>
       <ul className="grid grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-5 md:grid-cols-3 lg:grid-cols-4">
-        {menuOfferings.map((offering, index) => (
+        {offerings.map((offering, index) => (
           <li key={offering.id}>
             <Link
               to="/menu/$offeringId"

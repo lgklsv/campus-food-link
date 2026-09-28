@@ -12,11 +12,15 @@ src/
   pages/
     catalog/            # Catalog page and its UI components
     menu-offering/      # Menu offering page and its UI components
+    vendor/             # Vendor page and its UI components
   widgets/
     app-navigation/     # App navigation
+    menu-offering-grid/ # Offering cards shared by catalog and vendor pages
+  features/
+    navigate-back/      # History-aware back link with a fallback route
   entities/
     menu-offering/      # Menu offering mock data and card
-    vendor/             # Vendor card
+    vendor/             # Vendor mock data and card
   shared/
     assets/              # Reusable static assets
     lib/                 # Reusable, business-agnostic code

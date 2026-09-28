@@ -1,4 +1,5 @@
-import { CatalogGrid } from "./catalog-grid"
+import { menuOfferings } from "@/entities/menu-offering/model/menu-offerings"
+import { MenuOfferingGrid } from "@/widgets/menu-offering-grid/ui/menu-offering-grid"
 import { CatalogToolbar } from "./catalog-toolbar"
 
 export function CatalogPage() {
@@ -6,7 +7,7 @@ export function CatalogPage() {
     <>
       <h1 className="sr-only">Catalog</h1>
       <CatalogToolbar />
-      <CatalogGrid />
+      <MenuOfferingGrid offerings={menuOfferings} label="Catalog items" />
     </>
   )
 }
