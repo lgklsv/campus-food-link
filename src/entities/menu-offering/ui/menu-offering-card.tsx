@@ -17,6 +17,7 @@ export function MenuOfferingCard({
           alt=""
           width={640}
           height={640}
+          loading={priority ? "eager" : undefined}
           fetchPriority={priority ? "high" : "auto"}
           className="h-full w-full object-contain p-3 sm:p-5"
         />

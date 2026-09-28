@@ -12,6 +12,7 @@ export function AccountHighlights() {
           alt=""
           width="80"
           height="80"
+          loading="eager"
           fetchPriority="high"
           className="size-16 object-contain sm:size-20"
         />
@@ -30,6 +31,7 @@ export function AccountHighlights() {
           alt=""
           width="80"
           height="80"
+          loading="eager"
           fetchPriority="high"
           className="size-16 object-contain sm:size-20"
         />

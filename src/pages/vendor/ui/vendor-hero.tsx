@@ -9,6 +9,7 @@ export function VendorHero({ vendor }: { vendor: Vendor }) {
         alt=""
         width={1440}
         height={900}
+        loading="eager"
         fetchPriority="high"
         className="size-full object-cover"
       />

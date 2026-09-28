@@ -9,6 +9,7 @@ export function MenuOfferingHero({ offering }: { offering: MenuOffering }) {
         alt=""
         width={640}
         height={640}
+        loading="eager"
         fetchPriority="high"
         className="h-full w-full object-contain p-5 sm:p-8"
       />

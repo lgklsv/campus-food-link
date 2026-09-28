@@ -51,6 +51,7 @@ export function CartItem({
           alt=""
           width={112}
           height={112}
+          loading="eager"
           fetchPriority="high"
           className="absolute inset-0 size-full object-contain p-2"
         />
