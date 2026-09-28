@@ -9,49 +9,42 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AccountRouteRouteImport } from './routes/account/route'
-import { Route as CartRouteImport } from './routes/cart'
-import { Route as OrdersRouteRouteImport } from './routes/orders/route'
-import { Route as AccountIndexRouteImport } from './routes/account/index'
+import { Route as TabsRouteImport } from './routes/_tabs'
+import { Route as TabsIndexRouteImport } from './routes/_tabs/index'
+import { Route as TabsAccountRouteImport } from './routes/_tabs/account'
+import { Route as TabsCartRouteImport } from './routes/_tabs/cart'
+import { Route as TabsOrdersRouteImport } from './routes/_tabs/orders'
 import { Route as MenuOfferingIdRouteImport } from './routes/menu/$offeringId'
-import { Route as OrdersIndexRouteImport } from './routes/orders/index'
 import { Route as VendorsVendorIdRouteImport } from './routes/vendors/$vendorId'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const TabsRoute = TabsRouteImport.update({
+  id: '/_tabs',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AccountRouteRoute = AccountRouteRouteImport.update({
+const TabsIndexRoute = TabsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => TabsRoute,
+} as any)
+const TabsAccountRoute = TabsAccountRouteImport.update({
   id: '/account',
   path: '/account',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => TabsRoute,
 } as any)
-const CartRoute = CartRouteImport.update({
+const TabsCartRoute = TabsCartRouteImport.update({
   id: '/cart',
   path: '/cart',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => TabsRoute,
 } as any)
-const OrdersRouteRoute = OrdersRouteRouteImport.update({
+const TabsOrdersRoute = TabsOrdersRouteImport.update({
   id: '/orders',
   path: '/orders',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AccountIndexRoute = AccountIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AccountRouteRoute,
+  getParentRoute: () => TabsRoute,
 } as any)
 const MenuOfferingIdRoute = MenuOfferingIdRouteImport.update({
   id: '/menu/$offeringId',
   path: '/menu/$offeringId',
   getParentRoute: () => rootRouteImport,
-} as any)
-const OrdersIndexRoute = OrdersIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => OrdersRouteRoute,
 } as any)
 const VendorsVendorIdRoute = VendorsVendorIdRouteImport.update({
   id: '/vendors/$vendorId',
@@ -60,110 +53,101 @@ const VendorsVendorIdRoute = VendorsVendorIdRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/account': typeof AccountRouteRouteWithChildren
-  '/orders': typeof OrdersRouteRouteWithChildren
-  '/cart': typeof CartRoute
+  '/': typeof TabsIndexRoute
+  '/account': typeof TabsAccountRoute
+  '/cart': typeof TabsCartRoute
+  '/orders': typeof TabsOrdersRoute
   '/menu/$offeringId': typeof MenuOfferingIdRoute
   '/vendors/$vendorId': typeof VendorsVendorIdRoute
-  '/account/': typeof AccountIndexRoute
-  '/orders/': typeof OrdersIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/cart': typeof CartRoute
+  '/account': typeof TabsAccountRoute
+  '/cart': typeof TabsCartRoute
+  '/orders': typeof TabsOrdersRoute
   '/menu/$offeringId': typeof MenuOfferingIdRoute
   '/vendors/$vendorId': typeof VendorsVendorIdRoute
-  '/account': typeof AccountIndexRoute
-  '/orders': typeof OrdersIndexRoute
+  '/': typeof TabsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/account': typeof AccountRouteRouteWithChildren
-  '/orders': typeof OrdersRouteRouteWithChildren
-  '/cart': typeof CartRoute
+  '/_tabs': typeof TabsRouteWithChildren
+  '/_tabs/account': typeof TabsAccountRoute
+  '/_tabs/cart': typeof TabsCartRoute
+  '/_tabs/orders': typeof TabsOrdersRoute
   '/menu/$offeringId': typeof MenuOfferingIdRoute
   '/vendors/$vendorId': typeof VendorsVendorIdRoute
-  '/account/': typeof AccountIndexRoute
-  '/orders/': typeof OrdersIndexRoute
+  '/_tabs/': typeof TabsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/account'
-    | '/orders'
     | '/cart'
+    | '/orders'
     | '/menu/$offeringId'
     | '/vendors/$vendorId'
-    | '/account/'
-    | '/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
+    | '/account'
     | '/cart'
+    | '/orders'
     | '/menu/$offeringId'
     | '/vendors/$vendorId'
-    | '/account'
-    | '/orders'
+    | '/'
   id:
     | '__root__'
-    | '/'
-    | '/account'
-    | '/orders'
-    | '/cart'
+    | '/_tabs'
+    | '/_tabs/account'
+    | '/_tabs/cart'
+    | '/_tabs/orders'
     | '/menu/$offeringId'
     | '/vendors/$vendorId'
-    | '/account/'
-    | '/orders/'
+    | '/_tabs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AccountRouteRoute: typeof AccountRouteRouteWithChildren
-  OrdersRouteRoute: typeof OrdersRouteRouteWithChildren
-  CartRoute: typeof CartRoute
+  TabsRoute: typeof TabsRouteWithChildren
   MenuOfferingIdRoute: typeof MenuOfferingIdRoute
   VendorsVendorIdRoute: typeof VendorsVendorIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_tabs': {
+      id: '/_tabs'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof TabsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_tabs/': {
+      id: '/_tabs/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof TabsIndexRouteImport
+      parentRoute: typeof TabsRoute
     }
-    '/account': {
-      id: '/account'
+    '/_tabs/account': {
+      id: '/_tabs/account'
       path: '/account'
       fullPath: '/account'
-      preLoaderRoute: typeof AccountRouteRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof TabsAccountRouteImport
+      parentRoute: typeof TabsRoute
     }
-    '/cart': {
-      id: '/cart'
+    '/_tabs/cart': {
+      id: '/_tabs/cart'
       path: '/cart'
       fullPath: '/cart'
-      preLoaderRoute: typeof CartRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof TabsCartRouteImport
+      parentRoute: typeof TabsRoute
     }
-    '/orders': {
-      id: '/orders'
+    '/_tabs/orders': {
+      id: '/_tabs/orders'
       path: '/orders'
       fullPath: '/orders'
-      preLoaderRoute: typeof OrdersRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/account/': {
-      id: '/account/'
-      path: '/'
-      fullPath: '/account/'
-      preLoaderRoute: typeof AccountIndexRouteImport
-      parentRoute: typeof AccountRouteRoute
+      preLoaderRoute: typeof TabsOrdersRouteImport
+      parentRoute: typeof TabsRoute
     }
     '/menu/$offeringId': {
       id: '/menu/$offeringId'
@@ -171,13 +155,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/menu/$offeringId'
       preLoaderRoute: typeof MenuOfferingIdRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/orders/': {
-      id: '/orders/'
-      path: '/'
-      fullPath: '/orders/'
-      preLoaderRoute: typeof OrdersIndexRouteImport
-      parentRoute: typeof OrdersRouteRoute
     }
     '/vendors/$vendorId': {
       id: '/vendors/$vendorId'
@@ -189,35 +166,24 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AccountRouteRouteChildren {
-  AccountIndexRoute: typeof AccountIndexRoute
+interface TabsRouteChildren {
+  TabsAccountRoute: typeof TabsAccountRoute
+  TabsCartRoute: typeof TabsCartRoute
+  TabsOrdersRoute: typeof TabsOrdersRoute
+  TabsIndexRoute: typeof TabsIndexRoute
 }
 
-const AccountRouteRouteChildren: AccountRouteRouteChildren = {
-  AccountIndexRoute: AccountIndexRoute,
+const TabsRouteChildren: TabsRouteChildren = {
+  TabsAccountRoute: TabsAccountRoute,
+  TabsCartRoute: TabsCartRoute,
+  TabsOrdersRoute: TabsOrdersRoute,
+  TabsIndexRoute: TabsIndexRoute,
 }
 
-const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
-  AccountRouteRouteChildren,
-)
-
-interface OrdersRouteRouteChildren {
-  OrdersIndexRoute: typeof OrdersIndexRoute
-}
-
-const OrdersRouteRouteChildren: OrdersRouteRouteChildren = {
-  OrdersIndexRoute: OrdersIndexRoute,
-}
-
-const OrdersRouteRouteWithChildren = OrdersRouteRoute._addFileChildren(
-  OrdersRouteRouteChildren,
-)
+const TabsRouteWithChildren = TabsRoute._addFileChildren(TabsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AccountRouteRoute: AccountRouteRouteWithChildren,
-  OrdersRouteRoute: OrdersRouteRouteWithChildren,
-  CartRoute: CartRoute,
+  TabsRoute: TabsRouteWithChildren,
   MenuOfferingIdRoute: MenuOfferingIdRoute,
   VendorsVendorIdRoute: VendorsVendorIdRoute,
 }

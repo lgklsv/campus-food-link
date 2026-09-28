@@ -10,7 +10,8 @@ export function VendorCard({ vendor }: { vendor: Vendor }) {
           alt=""
           width={48}
           height={48}
-          loading="lazy"
+          loading="eager"
+          fetchPriority="high"
           decoding="async"
           className="size-full object-cover"
         />

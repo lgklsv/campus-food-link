@@ -9,7 +9,9 @@ export function VendorHero({ vendor }: { vendor: Vendor }) {
         alt=""
         width={1440}
         height={900}
+        loading="eager"
         fetchPriority="high"
+        decoding="async"
         className="size-full object-cover"
       />
       <BackButton fallbackTo="/" className="absolute left-4 top-4" />

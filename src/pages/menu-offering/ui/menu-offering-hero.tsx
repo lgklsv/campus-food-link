@@ -9,6 +9,9 @@ export function MenuOfferingHero({ offering }: { offering: MenuOffering }) {
         alt=""
         width={640}
         height={640}
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
         className="h-full w-full object-contain p-5 sm:p-8"
       />
       <BackButton fallbackTo="/" className="absolute left-4 top-4" />
