@@ -12,7 +12,7 @@ export function MenuOfferingPage({
   vendor: Vendor
 }) {
   return (
-    <main className="mx-auto w-full max-w-6xl pb-28 md:px-6 md:pb-12 md:pt-8">
+    <main className="mx-auto w-full max-w-6xl md:px-6 md:pt-8">
       <div className="grid gap-6 md:grid-cols-2 md:items-start md:gap-10 lg:gap-16">
         <MenuOfferingHero offering={offering} />
         <div className="px-4 md:px-0 md:pt-4">
