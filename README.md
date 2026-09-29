@@ -1,6 +1,17 @@
 # Campus Food Link
 
-TanStack Start, React, TypeScript, Tailwind CSS, and shadcn/ui starter organized with [Feature-Sliced Design](https://fsd.how/).
+Campus Food Link is a campus food ordering interface built with TanStack Start, React, TypeScript, and Tailwind CSS. The code is organized with [Feature-Sliced Design](https://fsd.how/).
+
+## Run locally
+
+Install Node.js and pnpm, then run:
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser. The app currently uses mock data, so no environment variables or external services are needed for local development.
 
 ## Structure
 
@@ -10,9 +21,11 @@ src/
     layouts/            # Shared page layouts
     styles/             # Global styles and design tokens
   pages/
-    cart/               # Static cart review and mock items
+    account/            # Account page
+    cart/               # Cart review and mock items
     catalog/            # Catalog page and its UI components
     menu-offering/      # Menu offering page and its UI components
+    orders/             # Orders page
     vendor/             # Vendor page and its UI components
   widgets/
     app-navigation/     # App navigation
@@ -36,14 +49,6 @@ src/
 Add `features/<action-name>` when a user-valued interaction is implemented. Keep slices in purpose-based segments such as `ui`, `model`, and `api`. Import the needed file directly; do not add barrel imports. A slice may import from lower layers, but not from another slice in the same layer. Avoid empty layers and placeholder slices until they have a real use.
 
 Use kebab-case for new file names, for example `menu-offering-card.tsx`. Keep filenames required by TanStack Router (`__root.tsx`, `index.tsx`) as conventions.
-
-Shared UI components can be imported directly, for example:
-
-```tsx
-import { Button } from "@/shared/ui/button"
-```
-
-The shadcn/ui aliases in `components.json` point to `shared` so newly generated primitives follow the same layout.
 
 ## Commands
 
