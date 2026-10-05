@@ -91,7 +91,17 @@ The `_app` layout checks the session in `beforeLoad` through the `getSession` se
 
 Student route groups contain the catalog, cart, orders, and vendor/menu detail pages. The vendor route group contains the Menu page at `/vendor`. A role mismatch redirects to the user's home page. Desktop and mobile navigation show links for the authenticated role.
 
-The vendor Menu page uses `getManagedMenuItems` and a separate query key to list all positions belonging to establishments owned by the current user, including unavailable items. The server function checks the vendor role and derives ownership from the session rather than accepting a vendor ID from the client. Cards are currently read-only; Add Menu Item is a disabled placeholder for the next step.
+The vendor Menu page uses `getManagedMenuItems` and a separate query key to list all positions belonging to establishments owned by the current user, including unavailable items. The server function checks the vendor role and derives ownership from the session rather than accepting a vendor ID from the client. Cards are currently read-only; Add Menu Item opens `/vendor/menu/new` outside the mobile tab layout.
+
+## Creating menu items
+
+The creation form uses React Hook Form and a shared Zod schema. It accepts an image, name, optional description, dollar price, and availability. The price input supports a decimal point or comma and is converted to integer cents on the server. File selection supports clicking, dropping, and a local preview; JPEG, PNG, and WebP files up to 5 MB are accepted. The submit button stays at the bottom on mobile and shows a pending state during creation.
+
+`createMenuItem` accepts FormData through a POST server function guarded by `requireVendorMiddleware`. It resolves the establishment from the session user's ownership, validates file type and size, and uses `file-type`'s `fileTypeFromBlob` on the server to detect the image format from its contents. The detected MIME must match the declared type. It then uploads a uniquely named image to R2 and inserts the menu item. The database stores only the image key. If insertion fails, the uploaded image is removed. Empty descriptions are stored as `null`.
+
+The `IMAGES` R2 binding points to `campus-food-link-images`. With `remote: true`, local development also uploads to this existing remote demo bucket, so new images use the same public base URL. No browser credentials or separate R2 API secrets are needed.
+
+`useCreateMenuItem` lives in `features/create-menu-item/api`, where it can invalidate both menu list keys and the affected vendor detail key. After a successful mutation, the form navigates back to `/vendor`. Updating and deleting items remain separate steps.
 
 `/account` is shared by all roles. Its layout renders the user header and Log out button around an `Outlet`; the index route supplies student highlights/settings and currently leaves vendor/admin content empty. The balance and order history remain mock data.
 

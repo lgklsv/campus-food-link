@@ -13,6 +13,17 @@ const menuItemFields = {
   isAvailable: menuItems.isAvailable,
 }
 
+export async function insertMenuItem(
+  db: NodePgDatabase,
+  values: typeof menuItems.$inferInsert
+) {
+  const [item] = await db
+    .insert(menuItems)
+    .values(values)
+    .returning({ id: menuItems.id })
+  return item
+}
+
 export function listMenuItemsByOwner(db: NodePgDatabase, ownerUserId: string) {
   return db
     .select(menuItemFields)

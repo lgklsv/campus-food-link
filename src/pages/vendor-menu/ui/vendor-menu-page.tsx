@@ -1,8 +1,9 @@
+import { Link } from "@tanstack/react-router"
 import { Plus } from "lucide-react"
 import { useManagedMenuOfferings } from "@/entities/menu-offering/api/use-managed-menu-offerings"
 import { MenuOfferingCard } from "@/entities/menu-offering/ui/menu-offering-card"
 import { Badge } from "@/shared/ui/badge"
-import { Button } from "@/shared/ui/button"
+import { buttonVariants } from "@/shared/ui/button"
 
 export function VendorMenuPage() {
   const { data: offerings } = useManagedMenuOfferings()
@@ -11,10 +12,10 @@ export function VendorMenuPage() {
     <>
       <header className="mb-6 flex items-center justify-between gap-4">
         <h1 className="text-3xl font-semibold tracking-tight">Menu</h1>
-        <Button type="button" disabled>
+        <Link to="/vendor/menu/new" className={buttonVariants()}>
           <Plus aria-hidden="true" />
           Add Menu Item
-        </Button>
+        </Link>
       </header>
       {offerings.length ? (
         <section aria-label="Your menu items">
