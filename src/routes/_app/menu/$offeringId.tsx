@@ -3,7 +3,7 @@ import { menuOfferings } from "@/entities/menu-offering/model/menu-offerings"
 import { vendors } from "@/entities/vendor/model/vendors"
 import { MenuOfferingPage } from "@/pages/menu-offering/ui/menu-offering-page"
 
-export const Route = createFileRoute("/menu/$offeringId")({
+export const Route = createFileRoute("/_app/menu/$offeringId")({
   loader: ({ params }) => {
     const offering = menuOfferings.find(
       (entry) => entry.id === params.offeringId

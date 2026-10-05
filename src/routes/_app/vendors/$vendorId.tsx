@@ -3,7 +3,7 @@ import { menuOfferings } from "@/entities/menu-offering/model/menu-offerings"
 import { vendors } from "@/entities/vendor/model/vendors"
 import { VendorPage } from "@/pages/vendor/ui/vendor-page"
 
-export const Route = createFileRoute("/vendors/$vendorId")({
+export const Route = createFileRoute("/_app/vendors/$vendorId")({
   loader: ({ params }) => {
     const vendor = vendors.find((entry) => entry.id === params.vendorId)
     if (!vendor) throw notFound()

@@ -9,79 +9,111 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TabsRouteImport } from './routes/_tabs'
-import { Route as TabsIndexRouteImport } from './routes/_tabs/index'
-import { Route as TabsAccountRouteImport } from './routes/_tabs/account'
-import { Route as TabsCartRouteImport } from './routes/_tabs/cart'
-import { Route as TabsOrdersRouteImport } from './routes/_tabs/orders'
-import { Route as MenuOfferingIdRouteImport } from './routes/menu/$offeringId'
-import { Route as VendorsVendorIdRouteImport } from './routes/vendors/$vendorId'
+import { Route as AppRouteImport } from './routes/_app'
+import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as AppTabsRouteImport } from './routes/_app/_tabs'
+import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
+import { Route as AppTabsIndexRouteImport } from './routes/_app/_tabs/index'
+import { Route as AppTabsAccountRouteImport } from './routes/_app/_tabs/account'
+import { Route as AppTabsCartRouteImport } from './routes/_app/_tabs/cart'
+import { Route as AppTabsOrdersRouteImport } from './routes/_app/_tabs/orders'
+import { Route as AppMenuOfferingIdRouteImport } from './routes/_app/menu/$offeringId'
+import { Route as AppVendorsVendorIdRouteImport } from './routes/_app/vendors/$vendorId'
 
-const TabsRoute = TabsRouteImport.update({
-  id: '/_tabs',
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TabsIndexRoute = TabsIndexRouteImport.update({
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppTabsRoute = AppTabsRouteImport.update({
+  id: '/_tabs',
+  getParentRoute: () => AppRoute,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthRegisterRoute = AuthRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AppTabsIndexRoute = AppTabsIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => TabsRoute,
+  getParentRoute: () => AppTabsRoute,
 } as any)
-const TabsAccountRoute = TabsAccountRouteImport.update({
+const AppTabsAccountRoute = AppTabsAccountRouteImport.update({
   id: '/account',
   path: '/account',
-  getParentRoute: () => TabsRoute,
+  getParentRoute: () => AppTabsRoute,
 } as any)
-const TabsCartRoute = TabsCartRouteImport.update({
+const AppTabsCartRoute = AppTabsCartRouteImport.update({
   id: '/cart',
   path: '/cart',
-  getParentRoute: () => TabsRoute,
+  getParentRoute: () => AppTabsRoute,
 } as any)
-const TabsOrdersRoute = TabsOrdersRouteImport.update({
+const AppTabsOrdersRoute = AppTabsOrdersRouteImport.update({
   id: '/orders',
   path: '/orders',
-  getParentRoute: () => TabsRoute,
+  getParentRoute: () => AppTabsRoute,
 } as any)
-const MenuOfferingIdRoute = MenuOfferingIdRouteImport.update({
+const AppMenuOfferingIdRoute = AppMenuOfferingIdRouteImport.update({
   id: '/menu/$offeringId',
   path: '/menu/$offeringId',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRoute,
 } as any)
-const VendorsVendorIdRoute = VendorsVendorIdRouteImport.update({
+const AppVendorsVendorIdRoute = AppVendorsVendorIdRouteImport.update({
   id: '/vendors/$vendorId',
   path: '/vendors/$vendorId',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof TabsIndexRoute
-  '/account': typeof TabsAccountRoute
-  '/cart': typeof TabsCartRoute
-  '/orders': typeof TabsOrdersRoute
-  '/menu/$offeringId': typeof MenuOfferingIdRoute
-  '/vendors/$vendorId': typeof VendorsVendorIdRoute
+  '/': typeof AppTabsIndexRoute
+  '/login': typeof AuthLoginRoute
+  '/register': typeof AuthRegisterRoute
+  '/account': typeof AppTabsAccountRoute
+  '/cart': typeof AppTabsCartRoute
+  '/orders': typeof AppTabsOrdersRoute
+  '/menu/$offeringId': typeof AppMenuOfferingIdRoute
+  '/vendors/$vendorId': typeof AppVendorsVendorIdRoute
 }
 export interface FileRoutesByTo {
-  '/account': typeof TabsAccountRoute
-  '/cart': typeof TabsCartRoute
-  '/orders': typeof TabsOrdersRoute
-  '/menu/$offeringId': typeof MenuOfferingIdRoute
-  '/vendors/$vendorId': typeof VendorsVendorIdRoute
-  '/': typeof TabsIndexRoute
+  '/': typeof AppTabsIndexRoute
+  '/login': typeof AuthLoginRoute
+  '/register': typeof AuthRegisterRoute
+  '/account': typeof AppTabsAccountRoute
+  '/cart': typeof AppTabsCartRoute
+  '/orders': typeof AppTabsOrdersRoute
+  '/menu/$offeringId': typeof AppMenuOfferingIdRoute
+  '/vendors/$vendorId': typeof AppVendorsVendorIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_tabs': typeof TabsRouteWithChildren
-  '/_tabs/account': typeof TabsAccountRoute
-  '/_tabs/cart': typeof TabsCartRoute
-  '/_tabs/orders': typeof TabsOrdersRoute
-  '/menu/$offeringId': typeof MenuOfferingIdRoute
-  '/vendors/$vendorId': typeof VendorsVendorIdRoute
-  '/_tabs/': typeof TabsIndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/_auth': typeof AuthRouteWithChildren
+  '/_app/_tabs': typeof AppTabsRouteWithChildren
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/register': typeof AuthRegisterRoute
+  '/_app/_tabs/account': typeof AppTabsAccountRoute
+  '/_app/_tabs/cart': typeof AppTabsCartRoute
+  '/_app/_tabs/orders': typeof AppTabsOrdersRoute
+  '/_app/menu/$offeringId': typeof AppMenuOfferingIdRoute
+  '/_app/vendors/$vendorId': typeof AppVendorsVendorIdRoute
+  '/_app/_tabs/': typeof AppTabsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/login'
+    | '/register'
     | '/account'
     | '/cart'
     | '/orders'
@@ -89,103 +121,162 @@ export interface FileRouteTypes {
     | '/vendors/$vendorId'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
+    | '/login'
+    | '/register'
     | '/account'
     | '/cart'
     | '/orders'
     | '/menu/$offeringId'
     | '/vendors/$vendorId'
-    | '/'
   id:
     | '__root__'
-    | '/_tabs'
-    | '/_tabs/account'
-    | '/_tabs/cart'
-    | '/_tabs/orders'
-    | '/menu/$offeringId'
-    | '/vendors/$vendorId'
-    | '/_tabs/'
+    | '/_app'
+    | '/_auth'
+    | '/_app/_tabs'
+    | '/_auth/login'
+    | '/_auth/register'
+    | '/_app/_tabs/account'
+    | '/_app/_tabs/cart'
+    | '/_app/_tabs/orders'
+    | '/_app/menu/$offeringId'
+    | '/_app/vendors/$vendorId'
+    | '/_app/_tabs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  TabsRoute: typeof TabsRouteWithChildren
-  MenuOfferingIdRoute: typeof MenuOfferingIdRoute
-  VendorsVendorIdRoute: typeof VendorsVendorIdRoute
+  AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_tabs': {
-      id: '/_tabs'
+    '/_app': {
+      id: '/_app'
       path: ''
       fullPath: '/'
-      preLoaderRoute: typeof TabsRouteImport
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_tabs/': {
-      id: '/_tabs/'
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/_tabs': {
+      id: '/_app/_tabs'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppTabsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/register': {
+      id: '/_auth/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_app/_tabs/': {
+      id: '/_app/_tabs/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof TabsIndexRouteImport
-      parentRoute: typeof TabsRoute
+      preLoaderRoute: typeof AppTabsIndexRouteImport
+      parentRoute: typeof AppTabsRoute
     }
-    '/_tabs/account': {
-      id: '/_tabs/account'
+    '/_app/_tabs/account': {
+      id: '/_app/_tabs/account'
       path: '/account'
       fullPath: '/account'
-      preLoaderRoute: typeof TabsAccountRouteImport
-      parentRoute: typeof TabsRoute
+      preLoaderRoute: typeof AppTabsAccountRouteImport
+      parentRoute: typeof AppTabsRoute
     }
-    '/_tabs/cart': {
-      id: '/_tabs/cart'
+    '/_app/_tabs/cart': {
+      id: '/_app/_tabs/cart'
       path: '/cart'
       fullPath: '/cart'
-      preLoaderRoute: typeof TabsCartRouteImport
-      parentRoute: typeof TabsRoute
+      preLoaderRoute: typeof AppTabsCartRouteImport
+      parentRoute: typeof AppTabsRoute
     }
-    '/_tabs/orders': {
-      id: '/_tabs/orders'
+    '/_app/_tabs/orders': {
+      id: '/_app/_tabs/orders'
       path: '/orders'
       fullPath: '/orders'
-      preLoaderRoute: typeof TabsOrdersRouteImport
-      parentRoute: typeof TabsRoute
+      preLoaderRoute: typeof AppTabsOrdersRouteImport
+      parentRoute: typeof AppTabsRoute
     }
-    '/menu/$offeringId': {
-      id: '/menu/$offeringId'
+    '/_app/menu/$offeringId': {
+      id: '/_app/menu/$offeringId'
       path: '/menu/$offeringId'
       fullPath: '/menu/$offeringId'
-      preLoaderRoute: typeof MenuOfferingIdRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppMenuOfferingIdRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/vendors/$vendorId': {
-      id: '/vendors/$vendorId'
+    '/_app/vendors/$vendorId': {
+      id: '/_app/vendors/$vendorId'
       path: '/vendors/$vendorId'
       fullPath: '/vendors/$vendorId'
-      preLoaderRoute: typeof VendorsVendorIdRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppVendorsVendorIdRouteImport
+      parentRoute: typeof AppRoute
     }
   }
 }
 
-interface TabsRouteChildren {
-  TabsAccountRoute: typeof TabsAccountRoute
-  TabsCartRoute: typeof TabsCartRoute
-  TabsOrdersRoute: typeof TabsOrdersRoute
-  TabsIndexRoute: typeof TabsIndexRoute
+interface AppTabsRouteChildren {
+  AppTabsAccountRoute: typeof AppTabsAccountRoute
+  AppTabsCartRoute: typeof AppTabsCartRoute
+  AppTabsOrdersRoute: typeof AppTabsOrdersRoute
+  AppTabsIndexRoute: typeof AppTabsIndexRoute
 }
 
-const TabsRouteChildren: TabsRouteChildren = {
-  TabsAccountRoute: TabsAccountRoute,
-  TabsCartRoute: TabsCartRoute,
-  TabsOrdersRoute: TabsOrdersRoute,
-  TabsIndexRoute: TabsIndexRoute,
+const AppTabsRouteChildren: AppTabsRouteChildren = {
+  AppTabsAccountRoute: AppTabsAccountRoute,
+  AppTabsCartRoute: AppTabsCartRoute,
+  AppTabsOrdersRoute: AppTabsOrdersRoute,
+  AppTabsIndexRoute: AppTabsIndexRoute,
 }
 
-const TabsRouteWithChildren = TabsRoute._addFileChildren(TabsRouteChildren)
+const AppTabsRouteWithChildren =
+  AppTabsRoute._addFileChildren(AppTabsRouteChildren)
+
+interface AppRouteChildren {
+  AppTabsRoute: typeof AppTabsRouteWithChildren
+  AppMenuOfferingIdRoute: typeof AppMenuOfferingIdRoute
+  AppVendorsVendorIdRoute: typeof AppVendorsVendorIdRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppTabsRoute: AppTabsRouteWithChildren,
+  AppMenuOfferingIdRoute: AppMenuOfferingIdRoute,
+  AppVendorsVendorIdRoute: AppVendorsVendorIdRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
+interface AuthRouteChildren {
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthRegisterRoute: typeof AuthRegisterRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthLoginRoute: AuthLoginRoute,
+  AuthRegisterRoute: AuthRegisterRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  TabsRoute: TabsRouteWithChildren,
-  MenuOfferingIdRoute: MenuOfferingIdRoute,
-  VendorsVendorIdRoute: VendorsVendorIdRoute,
+  AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
