@@ -1,11 +1,11 @@
-import type { MenuOffering } from "@/entities/menu-offering/model/menu-offerings"
+import type { MenuOffering } from "@/entities/menu-offering/model/menu-offering"
 import { BackButton } from "@/features/navigate-back/ui/back-button"
 
 export function MenuOfferingHero({ offering }: { offering: MenuOffering }) {
   return (
     <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-b-3xl bg-secondary md:rounded-3xl">
       <img
-        src={offering.image}
+        src={offering.imageUrl}
         alt=""
         width={640}
         height={640}

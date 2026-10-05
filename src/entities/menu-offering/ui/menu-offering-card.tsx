@@ -1,6 +1,6 @@
 import { Badge } from "@/shared/ui/badge"
 import { formatMenuPrice } from "../lib/format-menu-price"
-import type { MenuOffering } from "../model/menu-offerings"
+import type { MenuOffering } from "../model/menu-offering"
 
 export function MenuOfferingCard({
   offering,
@@ -13,7 +13,7 @@ export function MenuOfferingCard({
     <article className="min-w-0">
       <div className="flex aspect-square items-center justify-center overflow-hidden rounded-3xl bg-secondary">
         <img
-          src={offering.image}
+          src={offering.imageUrl}
           alt=""
           width={640}
           height={640}

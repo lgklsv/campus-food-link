@@ -1,6 +1,8 @@
 import "dotenv/config"
 import { asc, inArray } from "drizzle-orm"
+import { menuOfferings } from "../src/entities/menu-offering/model/menu-offerings"
 import { createDatabase } from "../src/server/db/connection"
+import { menuItems } from "../src/server/db/schema/menu-items"
 import { vendors } from "../src/server/db/schema/vendors"
 
 const databaseUrl = process.env.DATABASE_URL
@@ -56,6 +58,47 @@ try {
     `Added ${inserted.length} vendors; ${seeded.length} demo vendors available.`
   )
   console.table(seeded)
+
+  await db.transaction(async (tx) => {
+    const vendorIds = new Map(seeded.map((vendor) => [vendor.slug, vendor.id]))
+    const existingItems = await tx
+      .select({ vendorId: menuItems.vendorId, name: menuItems.name })
+      .from(menuItems)
+      .where(
+        inArray(
+          menuItems.vendorId,
+          seeded.map((vendor) => vendor.id)
+        )
+      )
+
+    const items = menuOfferings
+      .map((offering) => {
+        const vendorId = vendorIds.get(offering.vendorId)
+        if (vendorId === undefined) {
+          throw new Error(`Missing demo vendor: ${offering.vendorId}`)
+        }
+        return {
+          vendorId,
+          name: offering.name,
+          description: offering.description,
+          imageKey: offering.image.replace(/^\//, ""),
+          priceCents: offering.priceCents,
+          isAvailable: true,
+        }
+      })
+      .filter(
+        (item) =>
+          !existingItems.some(
+            (existing) =>
+              existing.vendorId === item.vendorId && existing.name === item.name
+          )
+      )
+
+    const insertedItems = items.length
+      ? await tx.insert(menuItems).values(items).returning({ id: menuItems.id })
+      : []
+    console.info(`Added ${insertedItems.length} menu items.`)
+  })
 } finally {
   await client.end()
 }

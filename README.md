@@ -11,7 +11,7 @@ pnpm install
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser. Vendor detail pages read their name, image, and preparation time from PostgreSQL. Menu items, categories, and the remaining demo screens still use mock data.
+Open [http://localhost:3000](http://localhost:3000) in your browser. The catalog, menu item details, and vendor menus read their data from PostgreSQL. Search, categories, cart, orders, and the remaining demo screens still use mock data.
 
 ## Local database
 
@@ -43,7 +43,17 @@ After applying migrations, run `pnpm db:seed` to insert Green Bowl, Campus Grill
 
 `vendors` uses a numeric identity primary key and a separate unique slug for URLs. Estimated preparation time is stored as minimum/maximum integer minutes, with database checks for a nonnegative, ordered range. Deleting an owner clears the link without deleting the establishment. Categories are not stored on this table.
 
-Only R2 object keys such as `vendors/green-bowl.webp` are stored in `imageKey`. The demo bucket is `campus-food-link-images`; its current public development base URL is `https://pub-92ffa488bd5b4fb3bb2ef1fd2a69af2a.r2.dev`. The base URL is configured as `IMAGE_BASE_URL` in `wrangler.jsonc`. Vendor detail pages use database vendors; the catalog and menu-item vendor summaries still use mock vendors.
+Only R2 object keys such as `vendors/green-bowl.webp` are stored in `imageKey`. The demo bucket is `campus-food-link-images`; its current public development base URL is `https://pub-92ffa488bd5b4fb3bb2ef1fd2a69af2a.r2.dev`. The base URL is configured as `IMAGE_BASE_URL` in `wrangler.jsonc`. Server functions build public image URLs through `src/server/lib/image-url.server.ts`.
+
+## Menu items
+
+`menu_items` has a numeric identity ID, an indexed vendor foreign key, name, nullable description, R2 image key, integer price in cents, availability flag, and timestamps. A database check rejects negative prices. There is no slug or stock quantity. The foreign key prevents deleting a vendor while its menu items still reference it.
+
+`pnpm db:seed` also inserts the six existing demo menu items, resolving their vendor IDs by slug. Repeated runs skip items with the same vendor and name and leave existing prices and availability unchanged. The old menu mock remains for the demo cart and as seed input. The previous mock-only portion weight is not included in this schema.
+
+`src/server/repositories/menu-items.server.ts` provides available-menu queries and an item lookup joined with its vendor. `getMenuItems` and `getMenuItemById` expose these through authenticated GET server functions in `entities/menu-offering/api`. Query keys, options, and suspense hooks live alongside them; display types are inferred from server function results.
+
+The catalog lists available items. `/menu/$offeringId` uses numeric IDs, returns 404 for invalid or missing IDs, and includes vendor details from the join. Unavailable items remain accessible by their direct URL, with the order button disabled. Ordering itself is still a UI placeholder.
 
 ## Vendor lookup
 
@@ -51,7 +61,7 @@ Only R2 object keys such as `vendors/green-bowl.webp` are stored in `imageKey`. 
 
 `src/entities/vendor/api/get-vendor-by-slug.ts` exposes `getVendorBySlug` through a GET server function. It validates the slug with Zod and uses `requireSessionMiddleware`, which composes the existing connection/auth middleware and rejects requests without a session. Reading a vendor is available to any authenticated role; owner checks will be added to write operations.
 
-Call it with `getVendorBySlug({ data: { slug: "green-bowl" } })`. The result includes `id`, `slug`, `name`, `imageUrl`, `estimatedMinutesMin`, and `estimatedMinutesMax`, or `null`. The server builds `imageUrl` from `IMAGE_BASE_URL` and the stored key. Router loaders will translate a missing vendor into `notFound()` when the page is connected. The page loader and React hook share these query options.
+Call it with `getVendorBySlug({ data: { slug: "green-bowl" } })`. The result includes `id`, `slug`, `name`, `imageUrl`, `estimatedMinutesMin`, `estimatedMinutesMax`, and a `menuItems` array, or `null`. The function first finds the vendor, then fetches its available menu items using the same request database connection. Router loaders translate a missing vendor into `notFound()`. The page loader and React hook share query options.
 
 ## Vendor queries and SSR
 
@@ -59,7 +69,9 @@ Following the [FSD TanStack Query guide](https://fsd.how/docs/guides/tech/with-r
 
 `getRouter()` creates a new QueryClient and connects it through `setupRouterSsrQueryIntegration`. The integration provides QueryClientProvider and handles SSR dehydration/hydration. The `/vendors/$slug` loader fills the query cache with `query`; `VendorPage` reads the same options through the suspense hook. Queries stay fresh for one minute, avoiding an immediate hydration refetch. The loader waits for fresh data when the cache is stale. Invalidating the query uses the same server function again.
 
-Unknown vendors produce a 404. Menu items and category chips remain mock data matched by vendor slug. The static Open badge is removed until opening status is implemented. Login, registration, and logout cancel outstanding queries and clear the cache before refreshing router state.
+Catalog and menu-item loaders also populate the query cache with `query`; their pages consume the corresponding suspense hooks. The global query default is a one-minute `staleTime`. Query keys are defined centrally for each entity.
+
+Unknown vendors produce a 404. Vendor category chips remain mock data matched by vendor slug. The static Open badge is removed until opening status is implemented. Login, registration, and logout cancel outstanding queries and clear the cache before refreshing router state.
 
 ## Authentication
 

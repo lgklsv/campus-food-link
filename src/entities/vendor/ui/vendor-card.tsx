@@ -1,12 +1,17 @@
 import { ChevronRight } from "lucide-react"
-import type { Vendor } from "../model/vendors"
+import { formatEstimatedTime } from "../lib/format-estimated-time"
+import type { VendorDetails } from "../model/vendor-details"
 
-export function VendorCard({ vendor }: { vendor: Vendor }) {
+export function VendorCard({
+  vendor,
+}: {
+  vendor: Omit<VendorDetails, "menuItems">
+}) {
   return (
     <div className="flex items-center gap-3">
       <div className="size-12 shrink-0 overflow-hidden rounded-xl bg-secondary">
         <img
-          src={vendor.image}
+          src={vendor.imageUrl}
           alt=""
           width={48}
           height={48}
@@ -18,7 +23,11 @@ export function VendorCard({ vendor }: { vendor: Vendor }) {
       <div>
         <p className="font-medium">{vendor.name}</p>
         <p className="text-sm text-muted-foreground">
-          Estimated {vendor.estimatedMinutes}
+          Estimated{" "}
+          {formatEstimatedTime(
+            vendor.estimatedMinutesMin,
+            vendor.estimatedMinutesMax
+          )}
         </p>
       </div>
       <ChevronRight

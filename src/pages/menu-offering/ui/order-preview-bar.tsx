@@ -5,9 +5,11 @@ import { Button } from "@/shared/ui/button"
 export function OrderPreviewBar({
   priceCents,
   itemName,
+  isAvailable,
 }: {
   priceCents: number
   itemName: string
+  isAvailable: boolean
 }) {
   return (
     <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3 md:static md:mt-8 md:border-0 md:px-0 md:pb-0 md:pt-0">
@@ -38,8 +40,9 @@ export function OrderPreviewBar({
           type="button"
           size="lg"
           className="h-11 min-w-0 flex-1 justify-between px-4"
+          disabled={!isAvailable}
         >
-          <span>Add to Order</span>
+          <span>{isAvailable ? "Add to Order" : "Unavailable"}</span>
           <span className="tabular-nums">{formatMenuPrice(priceCents)}</span>
         </Button>
       </div>
