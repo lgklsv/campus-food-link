@@ -1,4 +1,5 @@
 import type { authClient } from "@/entities/account/api/auth-client"
+import { getUserAvatar } from "@/entities/account/lib/get-user-avatar"
 import { Avatar } from "@/shared/ui/avatar"
 
 export function AccountHeader({
@@ -18,7 +19,7 @@ export function AccountHeader({
       </div>
       <Avatar
         name={user.name}
-        src={user.image ?? undefined}
+        src={getUserAvatar(user)}
         className="size-20 border border-border/50 bg-background sm:size-24"
       />
     </header>

@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router"
 import { cn } from "cn"
 import type { authClient } from "@/entities/account/api/auth-client"
+import { getUserAvatar } from "@/entities/account/lib/get-user-avatar"
 import { getRoleHome } from "@/entities/account/model/role"
 import { Avatar } from "@/shared/ui/avatar"
 import { Logo } from "@/shared/ui/logo"
@@ -46,7 +47,7 @@ export function DesktopHeader({
             }}
           >
             Account
-            <Avatar name={user.name} src={user.image ?? undefined} />
+            <Avatar name={user.name} src={getUserAvatar(user)} />
           </Link>
         </nav>
       </div>

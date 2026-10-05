@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router"
 import { ForkKnife, ReceiptText, ShoppingCart, Store } from "lucide-react"
 import type { authClient } from "@/entities/account/api/auth-client"
+import { getUserAvatar } from "@/entities/account/lib/get-user-avatar"
 import { Avatar } from "@/shared/ui/avatar"
 import { getNavigation } from "../model/navigation"
 
@@ -48,7 +49,7 @@ export function MobileTabBar({
         >
           <Avatar
             name={user.name}
-            src={user.image ?? undefined}
+            src={getUserAvatar(user)}
             className="size-6 border border-border/50 bg-background"
           />
           Account

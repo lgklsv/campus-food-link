@@ -15,7 +15,13 @@ export function Avatar({ className, name, src }: AvatarProps) {
         className
       )}
     >
-      {src ? <AvatarPrimitive.Image src={src} alt={name} /> : null}
+      {src ? (
+        <AvatarPrimitive.Image
+          src={src}
+          alt={name}
+          className="size-full object-cover"
+        />
+      ) : null}
       <AvatarPrimitive.Fallback>
         {name
           .split(" ")
