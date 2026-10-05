@@ -4,7 +4,7 @@ import { createDatabase } from "../db/connection"
 import { createAuth } from "./auth"
 
 export const authMiddleware = createMiddleware().server(async ({ next }) => {
-  const { client, db } = createDatabase(env.DATABASE_URL)
+  const { client, db } = createDatabase(env.HYPERDRIVE.connectionString)
 
   try {
     await client.connect()

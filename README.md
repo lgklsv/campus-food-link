@@ -24,7 +24,7 @@ pnpm db:check
 
 `db:check` runs `SELECT 1` through the shared Drizzle connection helper. It does not create tables or modify data. `pnpm db:down` stops the container; its named volume preserves the database. The database port is exposed only on localhost.
 
-`.env` contains the local PostgreSQL settings and `DATABASE_URL`. If you change the password or port, update the URL too. PostgreSQL initialization settings apply when the data volume is first created. Keep `.env` untracked; `.env.example` contains development placeholders only.
+`.env` contains the local PostgreSQL settings and `DATABASE_URL`. If you change the password or port, update the URL too. PostgreSQL initialization settings apply when the data volume is first created. Keep `.env` untracked; `.env.example` contains development placeholders only. The local Hyperdrive binding reads the same database URL while the Worker runs through Vite; set `CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE` explicitly if you want to override it.
 
 The `createDatabase` factory in `src/server/db/connection.ts` returns a PostgreSQL client and Drizzle `db`. The check script opens the connection and closes it in `finally`. The auth middleware owns the same lifecycle for auth requests, without sharing sockets across Worker requests. The schema in `src/server/db/schema` contains Better Auth tables in `auth.ts` and the application vendor table in `vendors.ts`. Auth schema generation only updates `auth.ts`.
 
@@ -35,7 +35,7 @@ pnpm db:generate
 pnpm db:migrate
 ```
 
-For production, we will configure Hyperdrive with the Railway database credentials in Cloudflare Dashboard and add its binding to the Worker. Server operations will pass the binding's connection string to the same helper. Other server secrets can be stored as encrypted Worker secrets in the Dashboard. Production hosting and bindings are not configured in this step.
+For production, the `campus-food-link-postgres` Hyperdrive configuration points to the Railway database with SQL response caching disabled. The `HYPERDRIVE` binding in `wrangler.jsonc` supplies its managed connection string to Worker requests, while the same database helper remains responsible for the per-request client lifecycle. Production migrations run during the Cloudflare Build deploy command using the `DATABASE_URL` build variable; the Worker runtime only needs the Better Auth secrets and the Hyperdrive binding.
 
 ## Demo vendors
 
@@ -83,7 +83,7 @@ Registration only creates a `student`. The `role` field accepts `student`, `vend
 
 The `/api/auth/$` route delegates GET/POST requests to Better Auth. Its middleware owns the database connection for the request and closes it in `finally`. The client uses the official React client, including `useSession`, `signUp.email`, `signIn.email`, and `signOut`.
 
-`pnpm auth:generate` regenerates the auth schema from `scripts/auth-schema-config.ts`; review the output before generating migrations. `pnpm typecheck` generates Worker binding types before checking TypeScript. Required server secret names are declared in `wrangler.jsonc`; their values remain in `.env` locally and will be set in Cloudflare for production. Hyperdrive integration remains a separate deployment step.
+`pnpm auth:generate` regenerates the auth schema from `scripts/auth-schema-config.ts`; review the output before generating migrations. `pnpm typecheck` generates Worker binding types before checking TypeScript. Required server secret names are declared in `wrangler.jsonc`; their values remain in `.env` locally and are set in Cloudflare for production. Hyperdrive is configured as a Worker binding rather than a runtime secret.
 
 ## Protected routes
 

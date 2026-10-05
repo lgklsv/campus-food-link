@@ -19,9 +19,14 @@
       "remote": true
     }
   ],
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      "id": "007801f199544bfc81770aa89adefb46"
+    }
+  ],
   "secrets": {
     "required": [
-      "DATABASE_URL",
       "BETTER_AUTH_SECRET",
       "BETTER_AUTH_URL"
     ]
