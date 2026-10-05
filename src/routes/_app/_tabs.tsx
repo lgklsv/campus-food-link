@@ -6,10 +6,11 @@ export const Route = createFileRoute("/_app/_tabs")({
 })
 
 function TabsLayout() {
+  const { user } = Route.useRouteContext()
   return (
     <>
       <Outlet />
-      <MobileTabBar />
+      <MobileTabBar user={user} />
     </>
   )
 }

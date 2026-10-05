@@ -1,13 +1,20 @@
+import type { ReactNode } from "react"
+import type { authClient } from "@/entities/account/api/auth-client"
 import { AccountHeader } from "./account-header"
-import { AccountHighlights } from "./account-highlights"
-import { AccountSettings } from "./account-settings"
+import { AccountLogout } from "./account-logout"
 
-export function AccountPage() {
+export function AccountPage({
+  user,
+  children,
+}: {
+  user: typeof authClient.$Infer.Session.user
+  children: ReactNode
+}) {
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-8 md:gap-10">
-      <AccountHeader />
-      <AccountHighlights />
-      <AccountSettings />
+      <AccountHeader user={user} />
+      {children}
+      <AccountLogout />
     </div>
   )
 }

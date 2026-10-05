@@ -1,7 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Link, useNavigate } from "@tanstack/react-router"
+import { Link, useNavigate, useRouter } from "@tanstack/react-router"
 import { Controller, useForm } from "react-hook-form"
 import { authClient } from "@/entities/account/api/auth-client"
+import { getRoleHome } from "@/entities/account/model/role"
 import { Button } from "@/shared/ui/button"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/ui/field"
 import { Input } from "@/shared/ui/input"
@@ -9,23 +10,31 @@ import { type RegisterValues, registerSchema } from "../model/register-schema"
 
 export function RegisterPage() {
   const navigate = useNavigate()
+  const router = useRouter()
   const form = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { email: "", password: "", confirmPassword: "" },
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
   })
 
   async function onSubmit(values: RegisterValues) {
     try {
-      const { error } = await authClient.signUp.email({
+      const { data, error } = await authClient.signUp.email({
         email: values.email,
         password: values.password,
-        name: values.email,
+        name: `${values.firstName} ${values.lastName}`,
       })
       if (error) {
         form.setError("root", { message: error.message || "Please try again." })
         return
       }
-      await navigate({ to: "/account" })
+      await router.invalidate()
+      await navigate({ to: getRoleHome(data.user.role), replace: true })
     } catch {
       form.setError("root", { message: "Unable to connect. Please try again." })
     }
@@ -39,6 +48,68 @@ export function RegisterPage() {
       <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
         <fieldset disabled={form.formState.isSubmitting} className="min-w-0">
           <FieldGroup className="gap-5">
+            <Controller
+              name="firstName"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="register-first-name">
+                    First name
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    id="register-first-name"
+                    type="text"
+                    autoComplete="given-name"
+                    placeholder="First name"
+                    className="h-11"
+                    aria-invalid={fieldState.invalid}
+                    aria-describedby={
+                      fieldState.invalid
+                        ? "register-first-name-error"
+                        : undefined
+                    }
+                  />
+                  {fieldState.invalid && (
+                    <FieldError
+                      id="register-first-name-error"
+                      errors={[fieldState.error]}
+                    />
+                  )}
+                </Field>
+              )}
+            />
+            <Controller
+              name="lastName"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="register-last-name">
+                    Last name
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    id="register-last-name"
+                    type="text"
+                    autoComplete="family-name"
+                    placeholder="Last name"
+                    className="h-11"
+                    aria-invalid={fieldState.invalid}
+                    aria-describedby={
+                      fieldState.invalid
+                        ? "register-last-name-error"
+                        : undefined
+                    }
+                  />
+                  {fieldState.invalid && (
+                    <FieldError
+                      id="register-last-name-error"
+                      errors={[fieldState.error]}
+                    />
+                  )}
+                </Field>
+              )}
+            />
             <Controller
               name="email"
               control={form.control}

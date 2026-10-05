@@ -41,13 +41,23 @@ For production, we will configure Hyperdrive with the Railway database credentia
 
 Better Auth uses email/password authentication and the Drizzle adapter. Its schema contains `user`, `session`, `account`, and `verification`. Password hashes are stored in `account`, not `user`. Email verification and social providers are disabled.
 
-Add `BETTER_AUTH_SECRET` (a random secret of at least 32 characters) and `BETTER_AUTH_URL=http://localhost:3000` to your local `.env`. With the database running, apply the migration using `pnpm db:migrate`. Then use `/register` or `/login`; successful authentication opens `/account`. The account header reads the current session, and Log out ends it.
+Add `BETTER_AUTH_SECRET` (a random secret of at least 32 characters) and `BETTER_AUTH_URL=http://localhost:3000` to your local `.env`. With the database running, apply the migration using `pnpm db:migrate`. Then use `/register` or `/login`. Successful authentication opens the catalog (`/`) for students, `/vendor` for vendors, or `/account` for admins. The account header reads the authenticated user, and Log out ends the session.
 
-Registration only creates a `student`. The `role` field accepts `student`, `vendor`, and `admin`, but API input cannot set or update it. For now, vendor/admin roles are assigned manually in the database. This step adds the role to the session; vendor ownership checks and role-specific screens are separate work.
+Registration only creates a `student`. The `role` field accepts `student`, `vendor`, and `admin`, but API input cannot set or update it. For now, vendor/admin roles are assigned manually in the database. The role is included in the session. Vendor ownership checks will be added with the backend CRUD endpoints.
 
 The `/api/auth/$` route delegates GET/POST requests to Better Auth. Its middleware owns the database connection for the request and closes it in `finally`. The client uses the official React client, including `useSession`, `signUp.email`, `signIn.email`, and `signOut`.
 
 `pnpm auth:generate` regenerates the auth schema from `scripts/auth-schema-config.ts`; review the output before generating migrations. `pnpm typecheck` generates Worker binding types before checking TypeScript. Required server secret names are declared in `wrangler.jsonc`; their values remain in `.env` locally and will be set in Cloudflare for production. Hyperdrive integration remains a separate deployment step.
+
+## Protected routes
+
+The `_app` layout checks the session in `beforeLoad` through the `getSession` server function. Unauthenticated users are redirected to `/login` before child routes load. The `_auth` layout redirects signed-in users away from login/register to their role's home page.
+
+Student route groups contain the catalog, cart, orders, and vendor/menu detail pages. The vendor route group contains the placeholder `/vendor` page. A role mismatch redirects to the user's home page. Desktop and mobile navigation show links for the authenticated role.
+
+`/account` is shared by all roles. Its layout renders the user header and Log out button around an `Outlet`; the index route supplies student highlights/settings and currently leaves vendor/admin content empty. The balance and order history remain mock data.
+
+Route guards control page loading. Future server functions and CRUD endpoints must independently check session, role, and ownership.
 
 ## Structure
 

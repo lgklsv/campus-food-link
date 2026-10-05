@@ -1,7 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Link, useNavigate } from "@tanstack/react-router"
+import { Link, useNavigate, useRouter } from "@tanstack/react-router"
 import { Controller, useForm } from "react-hook-form"
 import { authClient } from "@/entities/account/api/auth-client"
+import { getRoleHome } from "@/entities/account/model/role"
 import { Button } from "@/shared/ui/button"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/ui/field"
 import { Input } from "@/shared/ui/input"
@@ -9,6 +10,7 @@ import { type LoginValues, loginSchema } from "../model/login-schema"
 
 export function LoginPage() {
   const navigate = useNavigate()
+  const router = useRouter()
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
@@ -16,7 +18,7 @@ export function LoginPage() {
 
   async function onSubmit(values: LoginValues) {
     try {
-      const { error } = await authClient.signIn.email({
+      const { data, error } = await authClient.signIn.email({
         email: values.email,
         password: values.password,
       })
@@ -24,7 +26,8 @@ export function LoginPage() {
         form.setError("root", { message: error.message || "Please try again." })
         return
       }
-      await navigate({ to: "/account" })
+      await router.invalidate()
+      await navigate({ to: getRoleHome(data.user.role), replace: true })
     } catch {
       form.setError("root", { message: "Unable to connect. Please try again." })
     }

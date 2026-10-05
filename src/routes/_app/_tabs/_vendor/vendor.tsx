@@ -1,11 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { TabPageLayout } from "@/app/layouts/tab-page-layout"
-import { OrdersPage } from "@/pages/orders/ui/orders-page"
 
-export const Route = createFileRoute("/_app/_tabs/orders")({
+export const Route = createFileRoute("/_app/_tabs/_vendor/vendor")({
   component: () => (
     <TabPageLayout>
-      <OrdersPage />
+      <h1 className="text-3xl font-semibold tracking-tight">Vendor</h1>
     </TabPageLayout>
   ),
 })
