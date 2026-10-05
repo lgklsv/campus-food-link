@@ -1,9 +1,8 @@
 import { Link } from "@tanstack/react-router"
 import { Plus } from "lucide-react"
 import { useManagedMenuOfferings } from "@/entities/menu-offering/api/use-managed-menu-offerings"
-import { MenuOfferingCard } from "@/entities/menu-offering/ui/menu-offering-card"
-import { Badge } from "@/shared/ui/badge"
 import { buttonVariants } from "@/shared/ui/button"
+import { VendorMenuItemCard } from "./vendor-menu-item-card"
 
 export function VendorMenuPage() {
   const { data: offerings } = useManagedMenuOfferings()
@@ -22,12 +21,7 @@ export function VendorMenuPage() {
           <ul className="grid grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-5 md:grid-cols-3 lg:grid-cols-4">
             {offerings.map((offering, index) => (
               <li key={offering.id}>
-                <MenuOfferingCard offering={offering} priority={index < 4} />
-                {!offering.isAvailable ? (
-                  <Badge variant="outline" className="ml-1 mt-2">
-                    Unavailable
-                  </Badge>
-                ) : null}
+                <VendorMenuItemCard offering={offering} priority={index < 4} />
               </li>
             ))}
           </ul>
