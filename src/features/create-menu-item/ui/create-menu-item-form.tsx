@@ -34,7 +34,7 @@ export function CreateMenuItemForm() {
     data.set("image", values.image)
     try {
       await mutation.mutateAsync(data)
-      await navigate({ to: "/vendor" })
+      await navigate({ to: "/vendor/menu" })
     } catch (error) {
       form.setError("root", {
         message:

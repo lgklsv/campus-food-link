@@ -77,7 +77,7 @@ Unknown vendors produce a 404. Vendor category chips remain mock data matched by
 
 Better Auth uses email/password authentication and the Drizzle adapter. Its schema contains `user`, `session`, `account`, and `verification`. Password hashes are stored in `account`, not `user`. Email verification and social providers are disabled.
 
-Add `BETTER_AUTH_SECRET` (a random secret of at least 32 characters) and `BETTER_AUTH_URL=http://localhost:3000` to your local `.env`. With the database running, apply the migration using `pnpm db:migrate`. Then use `/register` or `/login`. Successful authentication opens the catalog (`/`) for students, `/vendor` for vendors, or `/account` for admins. The account header reads the authenticated user, and Log out ends the session.
+Add `BETTER_AUTH_SECRET` (a random secret of at least 32 characters) and `BETTER_AUTH_URL=http://localhost:3000` to your local `.env`. With the database running, apply the migration using `pnpm db:migrate`. Then use `/register` or `/login`. Successful authentication opens the catalog (`/`) for students, `/vendor/menu` for vendors, or `/account` for admins. The account header reads the authenticated user, and Log out ends the session.
 
 Registration only creates a `student`. The `role` field accepts `student`, `vendor`, and `admin`, but API input cannot set or update it. For now, vendor/admin roles are assigned manually in the database. The role is included in the session. Vendor ownership checks will be added with the backend CRUD endpoints.
 
@@ -89,7 +89,7 @@ The `/api/auth/$` route delegates GET/POST requests to Better Auth. Its middlewa
 
 The `_app` layout checks the session in `beforeLoad` through the `getSession` server function. Unauthenticated users are redirected to `/login` before child routes load. The `_auth` layout redirects signed-in users away from login/register to their role's home page.
 
-Student route groups contain the catalog, cart, orders, and vendor/menu detail pages. The vendor route group contains the Menu page at `/vendor`. A role mismatch redirects to the user's home page. Desktop and mobile navigation show links for the authenticated role.
+Student route groups contain the catalog, cart, orders, and vendor/menu detail pages. The vendor route group contains the Menu page at `/vendor/menu`. A role mismatch redirects to the user's home page. Desktop and mobile navigation show links for the authenticated role.
 
 The vendor Menu page uses `getManagedMenuItems` and a separate query key to list all positions belonging to establishments owned by the current user, including unavailable items. The server function checks the vendor role and derives ownership from the session rather than accepting a vendor ID from the client. Cards are currently read-only; Add Menu Item opens `/vendor/menu/new` outside the mobile tab layout.
 
@@ -101,7 +101,7 @@ The creation form uses React Hook Form and a shared Zod schema. It accepts an im
 
 The `IMAGES` R2 binding points to `campus-food-link-images`. With `remote: true`, local development also uploads to this existing remote demo bucket, so new images use the same public base URL. No browser credentials or separate R2 API secrets are needed.
 
-`useCreateMenuItem` lives in `features/create-menu-item/api`, where it can invalidate both menu list keys and the affected vendor detail key. After a successful mutation, the form navigates back to `/vendor`. Updating and deleting items remain separate steps.
+`useCreateMenuItem` lives in `features/create-menu-item/api`, where it can invalidate both menu list keys and the affected vendor detail key. After a successful mutation, the form navigates back to `/vendor/menu`. Updating and deleting items remain separate steps.
 
 `/account` is shared by all roles. Its layout renders the user header and Log out button around an `Outlet`; the index route supplies student highlights/settings and currently leaves vendor/admin content empty. The balance and order history remain mock data.
 

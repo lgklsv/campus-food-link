@@ -5,7 +5,7 @@ export function getRoleHome(role: Role) {
     case "student":
       return "/" as const
     case "vendor":
-      return "/vendor" as const
+      return "/vendor/menu" as const
     case "admin":
       return "/account" as const
   }

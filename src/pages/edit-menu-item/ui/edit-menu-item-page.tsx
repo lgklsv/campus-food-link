@@ -9,7 +9,7 @@ export function EditMenuItemPage({ id }: { id: number }) {
   return (
     <main className="mx-auto w-full max-w-4xl px-4 pb-[calc(6rem+env(safe-area-inset-bottom))] pt-6 md:px-6 md:pb-12 md:pt-8">
       <header className="mb-6 flex items-center gap-3">
-        <BackButton fallbackTo="/vendor" />
+        <BackButton fallbackTo="/vendor/menu" />
         <h1 className="sr-only">Edit Menu Item</h1>
       </header>
       <EditMenuItemForm key={offering.id} offering={offering} />
