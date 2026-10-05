@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query"
 import { useNavigate, useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 import { authClient } from "@/entities/account/api/auth-client"
@@ -6,6 +7,7 @@ import { Button } from "@/shared/ui/button"
 export function AccountLogout() {
   const navigate = useNavigate()
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [isSigningOut, setIsSigningOut] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -18,6 +20,8 @@ export function AccountLogout() {
         setError(result.error.message || "Unable to log out. Please try again.")
         return
       }
+      await queryClient.cancelQueries()
+      queryClient.clear()
       await router.invalidate()
       await navigate({ to: "/login", replace: true })
     } catch {

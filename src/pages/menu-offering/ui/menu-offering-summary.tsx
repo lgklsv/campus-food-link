@@ -31,8 +31,8 @@ export function MenuOfferingSummary({
       <Separator className="mt-6" />
       <div className="pt-5">
         <Link
-          to="/vendors/$vendorId"
-          params={{ vendorId: vendor.id }}
+          to="/vendors/$slug"
+          params={{ slug: vendor.id }}
           className="block rounded-xl outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           <VendorCard vendor={vendor} />

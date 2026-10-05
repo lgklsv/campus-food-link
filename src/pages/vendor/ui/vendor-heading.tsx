@@ -1,16 +1,19 @@
-import type { Vendor } from "@/entities/vendor/model/vendors"
-import { Badge } from "@/shared/ui/badge"
+import { formatEstimatedTime } from "@/entities/vendor/lib/format-estimated-time"
+import type { VendorDetails } from "@/entities/vendor/model/vendor-details"
 
-export function VendorHeading({ vendor }: { vendor: Vendor }) {
+export function VendorHeading({ vendor }: { vendor: VendorDetails }) {
   return (
     <div>
       <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
         {vendor.name}
       </h1>
       <div className="mt-3 flex items-center gap-3">
-        <Badge variant="success">Open</Badge>
         <p className="text-sm text-muted-foreground">
-          Estimated {vendor.estimatedMinutes}
+          Estimated{" "}
+          {formatEstimatedTime(
+            vendor.estimatedMinutesMin,
+            vendor.estimatedMinutesMax
+          )}
         </p>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { drizzleAdapter } from "@better-auth/drizzle-adapter"
 import { betterAuth } from "better-auth"
 import type { NodePgDatabase } from "drizzle-orm/node-postgres"
-import * as schema from "../db/schema"
+import * as schema from "../db/schema/auth"
 
 export function createAuth(
   db: NodePgDatabase,

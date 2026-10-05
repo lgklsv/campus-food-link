@@ -20,7 +20,7 @@ import { Route as AppTabsVendorRouteImport } from './routes/_app/_tabs/_vendor'
 import { Route as AppTabsAccountRouteImport } from './routes/_app/_tabs/account'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AppStudentMenuOfferingIdRouteImport } from './routes/_app/_student/menu/$offeringId'
-import { Route as AppStudentVendorsVendorIdRouteImport } from './routes/_app/_student/vendors/$vendorId'
+import { Route as AppStudentVendorsSlugRouteImport } from './routes/_app/_student/vendors/$slug'
 import { Route as AppTabsStudentIndexRouteImport } from './routes/_app/_tabs/_student/index'
 import { Route as AppTabsStudentCartRouteImport } from './routes/_app/_tabs/_student/cart'
 import { Route as AppTabsStudentOrdersRouteImport } from './routes/_app/_tabs/_student/orders'
@@ -77,12 +77,11 @@ const AppStudentMenuOfferingIdRoute =
     path: '/menu/$offeringId',
     getParentRoute: () => AppStudentRoute,
   } as any)
-const AppStudentVendorsVendorIdRoute =
-  AppStudentVendorsVendorIdRouteImport.update({
-    id: '/vendors/$vendorId',
-    path: '/vendors/$vendorId',
-    getParentRoute: () => AppStudentRoute,
-  } as any)
+const AppStudentVendorsSlugRoute = AppStudentVendorsSlugRouteImport.update({
+  id: '/vendors/$slug',
+  path: '/vendors/$slug',
+  getParentRoute: () => AppStudentRoute,
+} as any)
 const AppTabsStudentIndexRoute = AppTabsStudentIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -116,7 +115,7 @@ export interface FileRoutesByFullPath {
   '/account': typeof AppTabsAccountRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/menu/$offeringId': typeof AppStudentMenuOfferingIdRoute
-  '/vendors/$vendorId': typeof AppStudentVendorsVendorIdRoute
+  '/vendors/$slug': typeof AppStudentVendorsSlugRoute
   '/cart': typeof AppTabsStudentCartRoute
   '/orders': typeof AppTabsStudentOrdersRoute
   '/vendor': typeof AppTabsVendorVendorRoute
@@ -128,7 +127,7 @@ export interface FileRoutesByTo {
   '/register': typeof AuthRegisterRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/menu/$offeringId': typeof AppStudentMenuOfferingIdRoute
-  '/vendors/$vendorId': typeof AppStudentVendorsVendorIdRoute
+  '/vendors/$slug': typeof AppStudentVendorsSlugRoute
   '/cart': typeof AppTabsStudentCartRoute
   '/orders': typeof AppTabsStudentOrdersRoute
   '/vendor': typeof AppTabsVendorVendorRoute
@@ -147,7 +146,7 @@ export interface FileRoutesById {
   '/_app/_tabs/account': typeof AppTabsAccountRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_app/_student/menu/$offeringId': typeof AppStudentMenuOfferingIdRoute
-  '/_app/_student/vendors/$vendorId': typeof AppStudentVendorsVendorIdRoute
+  '/_app/_student/vendors/$slug': typeof AppStudentVendorsSlugRoute
   '/_app/_tabs/_student/cart': typeof AppTabsStudentCartRoute
   '/_app/_tabs/_student/orders': typeof AppTabsStudentOrdersRoute
   '/_app/_tabs/_vendor/vendor': typeof AppTabsVendorVendorRoute
@@ -163,7 +162,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/api/auth/$'
     | '/menu/$offeringId'
-    | '/vendors/$vendorId'
+    | '/vendors/$slug'
     | '/cart'
     | '/orders'
     | '/vendor'
@@ -175,7 +174,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/api/auth/$'
     | '/menu/$offeringId'
-    | '/vendors/$vendorId'
+    | '/vendors/$slug'
     | '/cart'
     | '/orders'
     | '/vendor'
@@ -193,7 +192,7 @@ export interface FileRouteTypes {
     | '/_app/_tabs/account'
     | '/api/auth/$'
     | '/_app/_student/menu/$offeringId'
-    | '/_app/_student/vendors/$vendorId'
+    | '/_app/_student/vendors/$slug'
     | '/_app/_tabs/_student/cart'
     | '/_app/_tabs/_student/orders'
     | '/_app/_tabs/_vendor/vendor'
@@ -286,11 +285,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppStudentMenuOfferingIdRouteImport
       parentRoute: typeof AppStudentRoute
     }
-    '/_app/_student/vendors/$vendorId': {
-      id: '/_app/_student/vendors/$vendorId'
-      path: '/vendors/$vendorId'
-      fullPath: '/vendors/$vendorId'
-      preLoaderRoute: typeof AppStudentVendorsVendorIdRouteImport
+    '/_app/_student/vendors/$slug': {
+      id: '/_app/_student/vendors/$slug'
+      path: '/vendors/$slug'
+      fullPath: '/vendors/$slug'
+      preLoaderRoute: typeof AppStudentVendorsSlugRouteImport
       parentRoute: typeof AppStudentRoute
     }
     '/_app/_tabs/_student/': {
@@ -333,12 +332,12 @@ declare module '@tanstack/react-router' {
 
 interface AppStudentRouteChildren {
   AppStudentMenuOfferingIdRoute: typeof AppStudentMenuOfferingIdRoute
-  AppStudentVendorsVendorIdRoute: typeof AppStudentVendorsVendorIdRoute
+  AppStudentVendorsSlugRoute: typeof AppStudentVendorsSlugRoute
 }
 
 const AppStudentRouteChildren: AppStudentRouteChildren = {
   AppStudentMenuOfferingIdRoute: AppStudentMenuOfferingIdRoute,
-  AppStudentVendorsVendorIdRoute: AppStudentVendorsVendorIdRoute,
+  AppStudentVendorsSlugRoute: AppStudentVendorsSlugRoute,
 }
 
 const AppStudentRouteWithChildren = AppStudentRoute._addFileChildren(

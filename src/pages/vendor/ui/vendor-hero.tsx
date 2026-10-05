@@ -1,11 +1,11 @@
-import type { Vendor } from "@/entities/vendor/model/vendors"
+import type { VendorDetails } from "@/entities/vendor/model/vendor-details"
 import { BackButton } from "@/features/navigate-back/ui/back-button"
 
-export function VendorHero({ vendor }: { vendor: Vendor }) {
+export function VendorHero({ vendor }: { vendor: VendorDetails }) {
   return (
     <div className="relative aspect-[1.65] overflow-hidden rounded-b-3xl bg-secondary sm:aspect-[2.2] md:aspect-[3] md:rounded-3xl">
       <img
-        src={vendor.image}
+        src={vendor.imageUrl}
         alt=""
         width={1440}
         height={900}

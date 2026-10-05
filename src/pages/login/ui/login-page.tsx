@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useQueryClient } from "@tanstack/react-query"
 import { Link, useNavigate, useRouter } from "@tanstack/react-router"
 import { Controller, useForm } from "react-hook-form"
 import { authClient } from "@/entities/account/api/auth-client"
@@ -11,6 +12,7 @@ import { type LoginValues, loginSchema } from "../model/login-schema"
 export function LoginPage() {
   const navigate = useNavigate()
   const router = useRouter()
+  const queryClient = useQueryClient()
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
@@ -26,6 +28,8 @@ export function LoginPage() {
         form.setError("root", { message: error.message || "Please try again." })
         return
       }
+      await queryClient.cancelQueries()
+      queryClient.clear()
       await router.invalidate()
       await navigate({ to: getRoleHome(data.user.role), replace: true })
     } catch {

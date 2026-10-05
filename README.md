@@ -11,7 +11,7 @@ pnpm install
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser. The UI currently uses mock data. The database setup below prepares the backend for the next steps.
+Open [http://localhost:3000](http://localhost:3000) in your browser. Vendor detail pages read their name, image, and preparation time from PostgreSQL. Menu items, categories, and the remaining demo screens still use mock data.
 
 ## Local database
 
@@ -26,7 +26,7 @@ pnpm db:check
 
 `.env` contains the local PostgreSQL settings and `DATABASE_URL`. If you change the password or port, update the URL too. PostgreSQL initialization settings apply when the data volume is first created. Keep `.env` untracked; `.env.example` contains development placeholders only.
 
-The `createDatabase` factory in `src/server/db/connection.ts` returns a PostgreSQL client and Drizzle `db`. The check script opens the connection and closes it in `finally`. The auth middleware owns the same lifecycle for auth requests, without sharing sockets across Worker requests. The schema currently contains Better Auth tables; application tables will be added separately.
+The `createDatabase` factory in `src/server/db/connection.ts` returns a PostgreSQL client and Drizzle `db`. The check script opens the connection and closes it in `finally`. The auth middleware owns the same lifecycle for auth requests, without sharing sockets across Worker requests. The schema in `src/server/db/schema` contains Better Auth tables in `auth.ts` and the application vendor table in `vendors.ts`. Auth schema generation only updates `auth.ts`.
 
 Drizzle Kit reads `.env` and `drizzle.config.ts`. After adding tables, generate and apply migrations with:
 
@@ -36,6 +36,30 @@ pnpm db:migrate
 ```
 
 For production, we will configure Hyperdrive with the Railway database credentials in Cloudflare Dashboard and add its binding to the Worker. Server operations will pass the binding's connection string to the same helper. Other server secrets can be stored as encrypted Worker secrets in the Dashboard. Production hosting and bindings are not configured in this step.
+
+## Demo vendors
+
+After applying migrations, run `pnpm db:seed` to insert Green Bowl, Campus Grill, and Coffee Corner. The seed skips existing slugs, so rerunning it does not duplicate vendors or overwrite changes. Owners are initially `null` and can be assigned manually to a Better Auth user later.
+
+`vendors` uses a numeric identity primary key and a separate unique slug for URLs. Estimated preparation time is stored as minimum/maximum integer minutes, with database checks for a nonnegative, ordered range. Deleting an owner clears the link without deleting the establishment. Categories are not stored on this table.
+
+Only R2 object keys such as `vendors/green-bowl.webp` are stored in `imageKey`. The demo bucket is `campus-food-link-images`; its current public development base URL is `https://pub-92ffa488bd5b4fb3bb2ef1fd2a69af2a.r2.dev`. The base URL is configured as `IMAGE_BASE_URL` in `wrangler.jsonc`. Vendor detail pages use database vendors; the catalog and menu-item vendor summaries still use mock vendors.
+
+## Vendor lookup
+
+`src/server/repositories/vendors.server.ts` owns the Drizzle lookup. `findVendorBySlug(db, slug)` receives the request's database and returns display fields with `imageKey`, or `null` if the vendor does not exist. It does not manage connections or authentication.
+
+`src/entities/vendor/api/get-vendor-by-slug.ts` exposes `getVendorBySlug` through a GET server function. It validates the slug with Zod and uses `requireSessionMiddleware`, which composes the existing connection/auth middleware and rejects requests without a session. Reading a vendor is available to any authenticated role; owner checks will be added to write operations.
+
+Call it with `getVendorBySlug({ data: { slug: "green-bowl" } })`. The result includes `id`, `slug`, `name`, `imageUrl`, `estimatedMinutesMin`, and `estimatedMinutesMax`, or `null`. The server builds `imageUrl` from `IMAGE_BASE_URL` and the stored key. Router loaders will translate a missing vendor into `notFound()` when the page is connected. The page loader and React hook share these query options.
+
+## Vendor queries and SSR
+
+Following the [FSD TanStack Query guide](https://fsd.how/docs/guides/tech/with-react-query/), vendor query options and the `useVendorBySlug` hook live in `entities/vendor/api`. `VendorDetails` is inferred from the server function return type rather than copied into a separate interface.
+
+`getRouter()` creates a new QueryClient and connects it through `setupRouterSsrQueryIntegration`. The integration provides QueryClientProvider and handles SSR dehydration/hydration. The `/vendors/$slug` loader fills the query cache with `query`; `VendorPage` reads the same options through the suspense hook. Queries stay fresh for one minute, avoiding an immediate hydration refetch. The loader waits for fresh data when the cache is stale. Invalidating the query uses the same server function again.
+
+Unknown vendors produce a 404. Menu items and category chips remain mock data matched by vendor slug. The static Open badge is removed until opening status is implemented. Login, registration, and logout cancel outstanding queries and clear the cache before refreshing router state.
 
 ## Authentication
 

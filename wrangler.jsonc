@@ -9,6 +9,9 @@
   "observability": {
     "enabled": true
   },
+  "vars": {
+    "IMAGE_BASE_URL": "https://pub-92ffa488bd5b4fb3bb2ef1fd2a69af2a.r2.dev"
+  },
   "secrets": {
     "required": [
       "DATABASE_URL",
