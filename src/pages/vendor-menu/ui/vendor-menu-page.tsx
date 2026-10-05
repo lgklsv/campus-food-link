@@ -1,0 +1,39 @@
+import { Plus } from "lucide-react"
+import { useManagedMenuOfferings } from "@/entities/menu-offering/api/use-managed-menu-offerings"
+import { MenuOfferingCard } from "@/entities/menu-offering/ui/menu-offering-card"
+import { Badge } from "@/shared/ui/badge"
+import { Button } from "@/shared/ui/button"
+
+export function VendorMenuPage() {
+  const { data: offerings } = useManagedMenuOfferings()
+
+  return (
+    <>
+      <header className="mb-6 flex items-center justify-between gap-4">
+        <h1 className="text-3xl font-semibold tracking-tight">Menu</h1>
+        <Button type="button" disabled>
+          <Plus aria-hidden="true" />
+          Add Menu Item
+        </Button>
+      </header>
+      {offerings.length ? (
+        <section aria-label="Your menu items">
+          <ul className="grid grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-5 md:grid-cols-3 lg:grid-cols-4">
+            {offerings.map((offering, index) => (
+              <li key={offering.id}>
+                <MenuOfferingCard offering={offering} priority={index < 4} />
+                {!offering.isAvailable ? (
+                  <Badge variant="outline" className="ml-1 mt-2">
+                    Unavailable
+                  </Badge>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : (
+        <p className="text-muted-foreground">No menu items yet.</p>
+      )}
+    </>
+  )
+}

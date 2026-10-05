@@ -89,7 +89,9 @@ The `/api/auth/$` route delegates GET/POST requests to Better Auth. Its middlewa
 
 The `_app` layout checks the session in `beforeLoad` through the `getSession` server function. Unauthenticated users are redirected to `/login` before child routes load. The `_auth` layout redirects signed-in users away from login/register to their role's home page.
 
-Student route groups contain the catalog, cart, orders, and vendor/menu detail pages. The vendor route group contains the placeholder `/vendor` page. A role mismatch redirects to the user's home page. Desktop and mobile navigation show links for the authenticated role.
+Student route groups contain the catalog, cart, orders, and vendor/menu detail pages. The vendor route group contains the Menu page at `/vendor`. A role mismatch redirects to the user's home page. Desktop and mobile navigation show links for the authenticated role.
+
+The vendor Menu page uses `getManagedMenuItems` and a separate query key to list all positions belonging to establishments owned by the current user, including unavailable items. The server function checks the vendor role and derives ownership from the session rather than accepting a vendor ID from the client. Cards are currently read-only; Add Menu Item is a disabled placeholder for the next step.
 
 `/account` is shared by all roles. Its layout renders the user header and Log out button around an `Outlet`; the index route supplies student highlights/settings and currently leaves vendor/admin content empty. The balance and order history remain mock data.
 

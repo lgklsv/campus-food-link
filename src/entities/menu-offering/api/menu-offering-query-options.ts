@@ -1,7 +1,15 @@
 import { queryOptions } from "@tanstack/react-query"
+import { getManagedMenuItems } from "./get-managed-menu-items"
 import { getMenuItemById } from "./get-menu-item-by-id"
 import { getMenuItems } from "./get-menu-items"
 import { menuOfferingQueryKeys } from "./menu-offering-query-keys"
+
+export function managedMenuOfferingsQueryOptions() {
+  return queryOptions({
+    queryKey: menuOfferingQueryKeys.managed,
+    queryFn: ({ signal }) => getManagedMenuItems({ signal }),
+  })
+}
 
 export function menuOfferingsQueryOptions() {
   return queryOptions({

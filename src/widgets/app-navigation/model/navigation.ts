@@ -5,9 +5,7 @@ const studentLinks = [
   { to: "/cart", label: "Cart", icon: "cart" },
   { to: "/orders", label: "Orders", icon: "orders" },
 ] as const
-const vendorLinks = [
-  { to: "/vendor", label: "Vendor", icon: "vendor" },
-] as const
+const vendorLinks = [{ to: "/vendor", label: "Menu", icon: "vendor" }] as const
 
 export function getNavigation(role: Role) {
   return role === "student"

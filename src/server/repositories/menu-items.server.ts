@@ -13,6 +13,15 @@ const menuItemFields = {
   isAvailable: menuItems.isAvailable,
 }
 
+export function listMenuItemsByOwner(db: NodePgDatabase, ownerUserId: string) {
+  return db
+    .select(menuItemFields)
+    .from(menuItems)
+    .innerJoin(vendors, eq(menuItems.vendorId, vendors.id))
+    .where(eq(vendors.ownerUserId, ownerUserId))
+    .orderBy(asc(menuItems.id))
+}
+
 export function listAvailableMenuItems(db: NodePgDatabase, vendorId?: number) {
   return db
     .select(menuItemFields)
