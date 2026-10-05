@@ -2,36 +2,43 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useNavigate } from "@tanstack/react-router"
 import { LoaderCircle } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
+import { priceToCents } from "@/entities/menu-offering/model/create-menu-item-schema"
 import {
-  type CreateMenuItemValues,
-  createMenuItemSchema,
-  priceToCents,
-} from "@/entities/menu-offering/model/create-menu-item-schema"
+  type EditMenuItemValues,
+  editMenuItemSchema,
+} from "@/entities/menu-offering/model/edit-menu-item-schema"
+import type { MenuOffering } from "@/entities/menu-offering/model/menu-offering"
 import { MenuItemImageInput } from "@/entities/menu-offering/ui/menu-item-image-input"
 import { Button } from "@/shared/ui/button"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/ui/field"
 import { Input } from "@/shared/ui/input"
 import { Switch } from "@/shared/ui/switch"
 import { Textarea } from "@/shared/ui/textarea"
-import { useCreateMenuItem } from "../api/use-create-menu-item"
+import { useEditMenuItem } from "../api/use-edit-menu-item"
 
-export function CreateMenuItemForm() {
+export function EditMenuItemForm({ offering }: { offering: MenuOffering }) {
   const navigate = useNavigate()
-  const mutation = useCreateMenuItem()
-  const form = useForm<CreateMenuItemValues>({
-    resolver: zodResolver(createMenuItemSchema),
-    defaultValues: { name: "", description: "", price: "", isAvailable: true },
+  const mutation = useEditMenuItem()
+  const form = useForm<EditMenuItemValues>({
+    resolver: zodResolver(editMenuItemSchema),
+    defaultValues: {
+      name: offering.name,
+      description: offering.description ?? "",
+      price: (offering.priceCents / 100).toFixed(2),
+      isAvailable: offering.isAvailable,
+    },
   })
   const pending = mutation.isPending || form.formState.isSubmitting
 
-  async function onSubmit(values: CreateMenuItemValues) {
+  async function onSubmit(values: EditMenuItemValues) {
     form.clearErrors("root")
     const data = new FormData()
+    data.set("id", String(offering.id))
     data.set("name", values.name)
     data.set("description", values.description)
     data.set("price", values.price)
     data.set("isAvailable", String(values.isAvailable))
-    data.set("image", values.image)
+    if (values.image) data.set("image", values.image)
     try {
       await mutation.mutateAsync(data)
       await navigate({ to: "/vendor" })
@@ -40,7 +47,7 @@ export function CreateMenuItemForm() {
         message:
           error instanceof Error
             ? error.message
-            : "Unable to create the menu item. Please try again.",
+            : "Unable to update the menu item. Please try again.",
       })
     }
   }
@@ -58,6 +65,7 @@ export function CreateMenuItemForm() {
             <Field data-invalid={fieldState.invalid}>
               <MenuItemImageInput
                 value={field.value}
+                imageUrl={offering.imageUrl}
                 onChange={(file) => {
                   field.onChange(file)
                   if (file) {
@@ -166,7 +174,7 @@ export function CreateMenuItemForm() {
                     }
                     onBlur={() => {
                       field.onBlur()
-                      const parsed = createMenuItemSchema.shape.price.safeParse(
+                      const parsed = editMenuItemSchema.shape.price.safeParse(
                         field.value
                       )
                       if (parsed.success)
@@ -225,7 +233,7 @@ export function CreateMenuItemForm() {
           {pending ? (
             <LoaderCircle aria-hidden="true" className="animate-spin" />
           ) : null}
-          {pending ? "Creating…" : "Create Menu Item"}
+          {pending ? "Saving…" : "Save Changes"}
         </Button>
       </div>
     </form>

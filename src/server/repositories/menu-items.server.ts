@@ -66,7 +66,11 @@ export function listAvailableMenuItems(db: NodePgDatabase, vendorId?: number) {
     .orderBy(asc(menuItems.id))
 }
 
-export async function findMenuItemById(db: NodePgDatabase, id: number) {
+export async function findMenuItemById(
+  db: NodePgDatabase,
+  id: number,
+  vendorId?: number
+) {
   const [item] = await db
     .select({
       ...menuItemFields,
@@ -81,7 +85,12 @@ export async function findMenuItemById(db: NodePgDatabase, id: number) {
     })
     .from(menuItems)
     .innerJoin(vendors, eq(menuItems.vendorId, vendors.id))
-    .where(eq(menuItems.id, id))
+    .where(
+      and(
+        eq(menuItems.id, id),
+        vendorId === undefined ? undefined : eq(menuItems.vendorId, vendorId)
+      )
+    )
     .limit(1)
 
   return item ?? null

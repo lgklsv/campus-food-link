@@ -28,6 +28,7 @@ import { Route as AppTabsStudentOrdersRouteImport } from './routes/_app/_tabs/_s
 import { Route as AppTabsVendorVendorRouteImport } from './routes/_app/_tabs/_vendor/vendor'
 import { Route as AppTabsAccountIndexRouteImport } from './routes/_app/_tabs/account/index'
 import { Route as AppVendorVendorMenuNewRouteImport } from './routes/_app/_vendor/vendor/menu/new'
+import { Route as AppVendorVendorMenuOfferingIdEditRouteImport } from './routes/_app/_vendor/vendor/menu/$offeringId/edit'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -118,6 +119,12 @@ const AppVendorVendorMenuNewRoute = AppVendorVendorMenuNewRouteImport.update({
   path: '/vendor/menu/new',
   getParentRoute: () => AppVendorRoute,
 } as any)
+const AppVendorVendorMenuOfferingIdEditRoute =
+  AppVendorVendorMenuOfferingIdEditRouteImport.update({
+    id: '/vendor/menu/$offeringId/edit',
+    path: '/vendor/menu/$offeringId/edit',
+    getParentRoute: () => AppVendorRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppTabsStudentIndexRoute
@@ -132,6 +139,7 @@ export interface FileRoutesByFullPath {
   '/vendor': typeof AppTabsVendorVendorRoute
   '/account/': typeof AppTabsAccountIndexRoute
   '/vendor/menu/new': typeof AppVendorVendorMenuNewRoute
+  '/vendor/menu/$offeringId/edit': typeof AppVendorVendorMenuOfferingIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppTabsStudentIndexRoute
@@ -145,6 +153,7 @@ export interface FileRoutesByTo {
   '/vendor': typeof AppTabsVendorVendorRoute
   '/account': typeof AppTabsAccountIndexRoute
   '/vendor/menu/new': typeof AppVendorVendorMenuNewRoute
+  '/vendor/menu/$offeringId/edit': typeof AppVendorVendorMenuOfferingIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -167,6 +176,7 @@ export interface FileRoutesById {
   '/_app/_tabs/_student/': typeof AppTabsStudentIndexRoute
   '/_app/_tabs/account/': typeof AppTabsAccountIndexRoute
   '/_app/_vendor/vendor/menu/new': typeof AppVendorVendorMenuNewRoute
+  '/_app/_vendor/vendor/menu/$offeringId/edit': typeof AppVendorVendorMenuOfferingIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -183,6 +193,7 @@ export interface FileRouteTypes {
     | '/vendor'
     | '/account/'
     | '/vendor/menu/new'
+    | '/vendor/menu/$offeringId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/vendor'
     | '/account'
     | '/vendor/menu/new'
+    | '/vendor/menu/$offeringId/edit'
   id:
     | '__root__'
     | '/_app'
@@ -217,6 +229,7 @@ export interface FileRouteTypes {
     | '/_app/_tabs/_student/'
     | '/_app/_tabs/account/'
     | '/_app/_vendor/vendor/menu/new'
+    | '/_app/_vendor/vendor/menu/$offeringId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -360,6 +373,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppVendorVendorMenuNewRouteImport
       parentRoute: typeof AppVendorRoute
     }
+    '/_app/_vendor/vendor/menu/$offeringId/edit': {
+      id: '/_app/_vendor/vendor/menu/$offeringId/edit'
+      path: '/vendor/menu/$offeringId/edit'
+      fullPath: '/vendor/menu/$offeringId/edit'
+      preLoaderRoute: typeof AppVendorVendorMenuOfferingIdEditRouteImport
+      parentRoute: typeof AppVendorRoute
+    }
   }
 }
 
@@ -434,10 +454,13 @@ const AppTabsRouteWithChildren =
 
 interface AppVendorRouteChildren {
   AppVendorVendorMenuNewRoute: typeof AppVendorVendorMenuNewRoute
+  AppVendorVendorMenuOfferingIdEditRoute: typeof AppVendorVendorMenuOfferingIdEditRoute
 }
 
 const AppVendorRouteChildren: AppVendorRouteChildren = {
   AppVendorVendorMenuNewRoute: AppVendorVendorMenuNewRoute,
+  AppVendorVendorMenuOfferingIdEditRoute:
+    AppVendorVendorMenuOfferingIdEditRoute,
 }
 
 const AppVendorRouteWithChildren = AppVendorRoute._addFileChildren(

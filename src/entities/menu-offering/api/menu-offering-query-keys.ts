@@ -7,4 +7,6 @@ export const menuOfferingQueryKeys = {
   managed: [...all, "list", "managed"] as const,
   details: [...all, "detail"] as const,
   detail: (id: number) => [...menuOfferingQueryKeys.details, id] as const,
+  managedDetail: (id: number) =>
+    [...menuOfferingQueryKeys.detail(id), "managed"] as const,
 }

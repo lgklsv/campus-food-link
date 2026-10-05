@@ -9,6 +9,7 @@ import { Button } from "@/shared/ui/button"
 
 export function MenuItemImageInput({
   value,
+  imageUrl,
   onChange,
   onBlur,
   inputRef,
@@ -16,6 +17,7 @@ export function MenuItemImageInput({
   invalid,
 }: {
   value: File | undefined
+  imageUrl?: string
   onChange: (file: File | undefined) => void
   onBlur: () => void
   inputRef: Ref<HTMLInputElement>
@@ -59,9 +61,9 @@ export function MenuItemImageInput({
           }
         }}
       >
-        {preview ? (
+        {preview || imageUrl ? (
           <img
-            src={preview}
+            src={preview || imageUrl}
             alt="Menu item preview"
             className="size-full object-contain p-4"
           />
@@ -88,7 +90,9 @@ export function MenuItemImageInput({
           accept={menuItemImageTypes.join(",")}
           disabled={disabled}
           aria-label={
-            value ? "Change menu item image" : "Upload menu item image"
+            value || imageUrl
+              ? "Change menu item image"
+              : "Upload menu item image"
           }
           aria-invalid={invalid}
           aria-describedby={invalid ? "menu-item-image-error" : undefined}

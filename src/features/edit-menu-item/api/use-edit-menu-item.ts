@@ -3,15 +3,10 @@ import { menuOfferingQueryKeys } from "@/entities/menu-offering/api/menu-offerin
 import { updateMenuItem } from "@/entities/menu-offering/api/update-menu-item"
 import { vendorQueryKeys } from "@/entities/vendor/api/vendor-query-keys"
 
-export function useMenuItemVisibility() {
+export function useEditMenuItem() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: ({ id, isAvailable }: { id: number; isAvailable: boolean }) => {
-      const data = new FormData()
-      data.set("id", String(id))
-      data.set("changes", JSON.stringify({ isAvailable }))
-      return updateMenuItem({ data })
-    },
+    mutationFn: (data: FormData) => updateMenuItem({ data }),
     onSuccess: async ({ id, vendorSlug }) => {
       await Promise.all([
         queryClient.invalidateQueries({
