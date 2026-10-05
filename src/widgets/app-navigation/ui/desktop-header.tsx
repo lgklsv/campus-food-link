@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router"
 import { cn } from "cn"
-import { mockAccount } from "@/entities/account/model/mock-account"
+import { authClient } from "@/entities/account/api/auth-client"
 import { Avatar } from "@/shared/ui/avatar"
 import { Logo } from "@/shared/ui/logo"
 
@@ -10,6 +10,7 @@ const activeClass =
   "bg-primary/10 text-primary hover:bg-primary/10 hover:text-primary"
 
 export function DesktopHeader() {
+  const { data: session } = authClient.useSession()
   return (
     <header className="sticky top-0 z-30 hidden border-b border-border/70 bg-background md:block">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-6">
@@ -51,7 +52,10 @@ export function DesktopHeader() {
             }}
           >
             Account
-            <Avatar name={mockAccount.name} src={mockAccount.avatar} />
+            <Avatar
+              name={session?.user.name ?? "Account"}
+              src={session?.user.image ?? undefined}
+            />
           </Link>
         </nav>
       </div>

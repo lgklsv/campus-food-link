@@ -26,7 +26,7 @@ pnpm db:check
 
 `.env` contains the local PostgreSQL settings and `DATABASE_URL`. If you change the password or port, update the URL too. PostgreSQL initialization settings apply when the data volume is first created. Keep `.env` untracked; `.env.example` contains development placeholders only.
 
-The `createDatabase` factory in `src/server/db/connection.ts` returns a PostgreSQL client and Drizzle `db`. The check script opens the connection and closes it in `finally`. In the application, the future database middleware will own that lifecycle and pass `db` to services, without sharing sockets across Worker requests. The schema is intentionally empty until we add Better Auth and application tables.
+The `createDatabase` factory in `src/server/db/connection.ts` returns a PostgreSQL client and Drizzle `db`. The check script opens the connection and closes it in `finally`. The auth middleware owns the same lifecycle for auth requests, without sharing sockets across Worker requests. The schema currently contains Better Auth tables; application tables will be added separately.
 
 Drizzle Kit reads `.env` and `drizzle.config.ts`. After adding tables, generate and apply migrations with:
 
@@ -36,6 +36,18 @@ pnpm db:migrate
 ```
 
 For production, we will configure Hyperdrive with the Railway database credentials in Cloudflare Dashboard and add its binding to the Worker. Server operations will pass the binding's connection string to the same helper. Other server secrets can be stored as encrypted Worker secrets in the Dashboard. Production hosting and bindings are not configured in this step.
+
+## Authentication
+
+Better Auth uses email/password authentication and the Drizzle adapter. Its schema contains `user`, `session`, `account`, and `verification`. Password hashes are stored in `account`, not `user`. Email verification and social providers are disabled.
+
+Add `BETTER_AUTH_SECRET` (a random secret of at least 32 characters) and `BETTER_AUTH_URL=http://localhost:3000` to your local `.env`. With the database running, apply the migration using `pnpm db:migrate`. Then use `/register` or `/login`; successful authentication opens `/account`. The account header reads the current session, and Log out ends it.
+
+Registration only creates a `student`. The `role` field accepts `student`, `vendor`, and `admin`, but API input cannot set or update it. For now, vendor/admin roles are assigned manually in the database. This step adds the role to the session; vendor ownership checks and role-specific screens are separate work.
+
+The `/api/auth/$` route delegates GET/POST requests to Better Auth. Its middleware owns the database connection for the request and closes it in `finally`. The client uses the official React client, including `useSession`, `signUp.email`, `signIn.email`, and `signOut`.
+
+`pnpm auth:generate` regenerates the auth schema from `scripts/auth-schema-config.ts`; review the output before generating migrations. `pnpm typecheck` generates Worker binding types before checking TypeScript. Required server secret names are declared in `wrangler.jsonc`; their values remain in `.env` locally and will be set in Cloudflare for production. Hyperdrive integration remains a separate deployment step.
 
 ## Structure
 

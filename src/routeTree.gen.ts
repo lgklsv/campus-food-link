@@ -20,6 +20,7 @@ import { Route as AppTabsCartRouteImport } from './routes/_app/_tabs/cart'
 import { Route as AppTabsOrdersRouteImport } from './routes/_app/_tabs/orders'
 import { Route as AppMenuOfferingIdRouteImport } from './routes/_app/menu/$offeringId'
 import { Route as AppVendorsVendorIdRouteImport } from './routes/_app/vendors/$vendorId'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -73,6 +74,11 @@ const AppVendorsVendorIdRoute = AppVendorsVendorIdRouteImport.update({
   path: '/vendors/$vendorId',
   getParentRoute: () => AppRoute,
 } as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppTabsIndexRoute
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/orders': typeof AppTabsOrdersRoute
   '/menu/$offeringId': typeof AppMenuOfferingIdRoute
   '/vendors/$vendorId': typeof AppVendorsVendorIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppTabsIndexRoute
@@ -93,6 +100,7 @@ export interface FileRoutesByTo {
   '/orders': typeof AppTabsOrdersRoute
   '/menu/$offeringId': typeof AppMenuOfferingIdRoute
   '/vendors/$vendorId': typeof AppVendorsVendorIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/_app/_tabs/orders': typeof AppTabsOrdersRoute
   '/_app/menu/$offeringId': typeof AppMenuOfferingIdRoute
   '/_app/vendors/$vendorId': typeof AppVendorsVendorIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/_app/_tabs/': typeof AppTabsIndexRoute
 }
 export interface FileRouteTypes {
@@ -119,6 +128,7 @@ export interface FileRouteTypes {
     | '/orders'
     | '/menu/$offeringId'
     | '/vendors/$vendorId'
+    | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -129,6 +139,7 @@ export interface FileRouteTypes {
     | '/orders'
     | '/menu/$offeringId'
     | '/vendors/$vendorId'
+    | '/api/auth/$'
   id:
     | '__root__'
     | '/_app'
@@ -141,12 +152,14 @@ export interface FileRouteTypes {
     | '/_app/_tabs/orders'
     | '/_app/menu/$offeringId'
     | '/_app/vendors/$vendorId'
+    | '/api/auth/$'
     | '/_app/_tabs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -228,6 +241,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppVendorsVendorIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -277,6 +297,7 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

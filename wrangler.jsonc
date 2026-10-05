@@ -2,9 +2,18 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "campus-food-link",
   "compatibility_date": "2026-09-27",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
   "main": "@tanstack/react-start/server-entry",
   "observability": {
     "enabled": true
+  },
+  "secrets": {
+    "required": [
+      "DATABASE_URL",
+      "BETTER_AUTH_SECRET",
+      "BETTER_AUTH_URL"
+    ]
   }
 }
