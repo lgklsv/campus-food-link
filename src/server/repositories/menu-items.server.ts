@@ -1,4 +1,4 @@
-import { and, asc, eq } from "drizzle-orm"
+import { and, asc, eq, isNull } from "drizzle-orm"
 import type { NodePgDatabase } from "drizzle-orm/node-postgres"
 import { menuItems } from "../db/schema/menu-items"
 import { vendors } from "../db/schema/vendors"
@@ -38,7 +38,33 @@ export async function updateMenuItem(
   const [item] = await db
     .update(menuItems)
     .set(values)
-    .where(and(eq(menuItems.id, id), eq(menuItems.vendorId, vendorId)))
+    .where(
+      and(
+        eq(menuItems.id, id),
+        eq(menuItems.vendorId, vendorId),
+        isNull(menuItems.deletedAt)
+      )
+    )
+    .returning({ id: menuItems.id })
+
+  return item ?? null
+}
+
+export async function softDeleteMenuItem(
+  db: NodePgDatabase,
+  id: number,
+  vendorId: number
+) {
+  const [item] = await db
+    .update(menuItems)
+    .set({ deletedAt: new Date() })
+    .where(
+      and(
+        eq(menuItems.id, id),
+        eq(menuItems.vendorId, vendorId),
+        isNull(menuItems.deletedAt)
+      )
+    )
     .returning({ id: menuItems.id })
 
   return item ?? null
@@ -49,7 +75,9 @@ export function listMenuItemsByOwner(db: NodePgDatabase, ownerUserId: string) {
     .select(menuItemFields)
     .from(menuItems)
     .innerJoin(vendors, eq(menuItems.vendorId, vendors.id))
-    .where(eq(vendors.ownerUserId, ownerUserId))
+    .where(
+      and(eq(vendors.ownerUserId, ownerUserId), isNull(menuItems.deletedAt))
+    )
     .orderBy(asc(menuItems.id))
 }
 
@@ -60,6 +88,7 @@ export function listAvailableMenuItems(db: NodePgDatabase, vendorId?: number) {
     .where(
       and(
         eq(menuItems.isAvailable, true),
+        isNull(menuItems.deletedAt),
         vendorId === undefined ? undefined : eq(menuItems.vendorId, vendorId)
       )
     )
@@ -88,6 +117,7 @@ export async function findMenuItemById(
     .where(
       and(
         eq(menuItems.id, id),
+        isNull(menuItems.deletedAt),
         vendorId === undefined ? undefined : eq(menuItems.vendorId, vendorId)
       )
     )

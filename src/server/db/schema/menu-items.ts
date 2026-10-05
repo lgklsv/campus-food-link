@@ -22,6 +22,7 @@ export const menuItems = pgTable(
     imageKey: text("image_key").notNull(),
     priceCents: integer("price_cents").notNull(),
     isAvailable: boolean("is_available").default(true).notNull(),
+    deletedAt: timestamp("deleted_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),

@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router"
 import { cn } from "cn"
-import { EyeOff, Pencil, Trash2 } from "lucide-react"
+import { EyeOff, Pencil } from "lucide-react"
 import type { MenuOffering } from "@/entities/menu-offering/model/menu-offering"
 import { MenuOfferingCard } from "@/entities/menu-offering/ui/menu-offering-card"
+import { MenuItemDeleteDialog } from "@/features/manage-menu-item/ui/menu-item-delete-dialog"
 import { MenuItemVisibilityDialog } from "@/features/manage-menu-item/ui/menu-item-visibility-dialog"
 import { Badge } from "@/shared/ui/badge"
-import { Button, buttonVariants } from "@/shared/ui/button"
+import { buttonVariants } from "@/shared/ui/button"
 import { ButtonGroup } from "@/shared/ui/button-group"
 
 export function VendorMenuItemCard({
@@ -46,16 +47,7 @@ export function VendorMenuItemCard({
           >
             <Pencil aria-hidden="true" />
           </Link>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className="size-11 text-destructive hover:text-destructive active:text-destructive"
-            aria-label={`Delete ${offering.name}`}
-            title="Delete"
-          >
-            <Trash2 aria-hidden="true" className="opacity-50" />
-          </Button>
+          <MenuItemDeleteDialog offering={offering} />
         </ButtonGroup>
       }
     />
