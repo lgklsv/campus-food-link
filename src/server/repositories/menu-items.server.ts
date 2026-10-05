@@ -24,6 +24,26 @@ export async function insertMenuItem(
   return item
 }
 
+export async function updateMenuItem(
+  db: NodePgDatabase,
+  id: number,
+  vendorId: number,
+  values: Partial<
+    Pick<
+      typeof menuItems.$inferInsert,
+      "name" | "description" | "imageKey" | "priceCents" | "isAvailable"
+    >
+  >
+) {
+  const [item] = await db
+    .update(menuItems)
+    .set(values)
+    .where(and(eq(menuItems.id, id), eq(menuItems.vendorId, vendorId)))
+    .returning({ id: menuItems.id })
+
+  return item ?? null
+}
+
 export function listMenuItemsByOwner(db: NodePgDatabase, ownerUserId: string) {
   return db
     .select(menuItemFields)

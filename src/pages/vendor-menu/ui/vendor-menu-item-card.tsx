@@ -1,4 +1,4 @@
-import { Pencil, Trash2 } from "lucide-react"
+import { EyeOff, Pencil, Trash2 } from "lucide-react"
 import type { MenuOffering } from "@/entities/menu-offering/model/menu-offering"
 import { MenuOfferingCard } from "@/entities/menu-offering/ui/menu-offering-card"
 import { MenuItemVisibilityDialog } from "@/features/manage-menu-item/ui/menu-item-visibility-dialog"
@@ -19,8 +19,9 @@ export function VendorMenuItemCard({
       priority={priority}
       badge={
         !offering.isAvailable ? (
-          <Badge variant="outline" className="bg-background">
-            Unavailable
+          <Badge className="h-6 border-0 bg-black/65 px-2.5 text-white backdrop-blur-sm">
+            <EyeOff aria-hidden="true" />
+            Hidden
           </Badge>
         ) : undefined
       }

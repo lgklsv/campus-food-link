@@ -1,4 +1,5 @@
-import { Eye, EyeOff } from "lucide-react"
+import { Eye, EyeOff, LoaderCircle } from "lucide-react"
+import { useState } from "react"
 import type { MenuOffering } from "@/entities/menu-offering/model/menu-offering"
 import {
   AlertDialog,
@@ -13,17 +14,27 @@ import {
   AlertDialogTrigger,
 } from "@/shared/ui/alert-dialog"
 import { Button } from "@/shared/ui/button"
+import { useMenuItemVisibility } from "../api/use-menu-item-visibility"
 
 export function MenuItemVisibilityDialog({
   offering,
 }: {
   offering: MenuOffering
 }) {
+  const [open, setOpen] = useState(false)
+  const mutation = useMenuItemVisibility()
   const action = offering.isAvailable ? "Hide from Menu" : "Show in Menu"
   const Icon = offering.isAvailable ? EyeOff : Eye
 
   return (
-    <AlertDialog>
+    <AlertDialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (mutation.isPending) return
+        mutation.reset()
+        setOpen(nextOpen)
+      }}
+    >
       <AlertDialogTrigger
         render={
           <Button
@@ -60,10 +71,30 @@ export function MenuItemVisibilityDialog({
               : `${offering.name} will appear in the student menu and become available to order.`}
           </AlertDialogDescription>
         </AlertDialogHeader>
+        {mutation.isError ? (
+          <p role="alert" className="text-center text-sm text-destructive">
+            {mutation.error.message ||
+              "Could not update this menu item. Try again."}
+          </p>
+        ) : null}
         <AlertDialogFooter>
-          <AlertDialogCancel type="button">Cancel</AlertDialogCancel>
-          <AlertDialogAction type="button" disabled>
-            {action}
+          <AlertDialogCancel type="button" disabled={mutation.isPending}>
+            Cancel
+          </AlertDialogCancel>
+          <AlertDialogAction
+            type="button"
+            disabled={mutation.isPending}
+            onClick={() => {
+              mutation.mutate(
+                { id: offering.id, isAvailable: !offering.isAvailable },
+                { onSuccess: () => setOpen(false) }
+              )
+            }}
+          >
+            {mutation.isPending ? (
+              <LoaderCircle aria-hidden="true" className="animate-spin" />
+            ) : null}
+            {mutation.isPending ? "Saving" : action}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
