@@ -16,7 +16,7 @@ export function getRouter() {
     context: { queryClient },
 
     scrollRestoration: true,
-    defaultPreload: "intent",
+    defaultPreload: false,
     defaultPreloadStaleTime: 0,
   })
 
