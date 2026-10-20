@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useNavigate } from "@tanstack/react-router"
 import { LoaderCircle } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
+import { optimizeMenuItemImage } from "@/entities/menu-offering/lib/optimize-menu-item-image"
 import { priceToCents } from "@/entities/menu-offering/model/create-menu-item-schema"
 import {
   type EditMenuItemValues,
@@ -38,8 +39,10 @@ export function EditMenuItemForm({ offering }: { offering: MenuOffering }) {
     data.set("description", values.description)
     data.set("price", values.price)
     data.set("isAvailable", String(values.isAvailable))
-    if (values.image) data.set("image", values.image)
     try {
+      if (values.image) {
+        data.set("image", await optimizeMenuItemImage(values.image))
+      }
       await mutation.mutateAsync(data)
       await navigate({ to: "/vendor/menu" })
     } catch (error) {
